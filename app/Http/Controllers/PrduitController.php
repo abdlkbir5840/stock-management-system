@@ -48,13 +48,13 @@ class PrduitController extends Controller
      */
     public function store(Request $request)
     {
-        $existingProduct = Produit::where('code', $request->code)->first();
+        $existingProduit = Produit::where('code', $request->code)->first();
 
-        if ($existingProduct) {
+        if ($existingProduit) {
             return response()->json([
-                'status' => 3402,
+                'status' => 409,
                 'Message' => "Produit deja existe."
-            ], 200);
+            ], 409);
         }else{
             $produit = $request->all();
             $produitSaved = Produit::create($produit);
@@ -82,7 +82,19 @@ class PrduitController extends Controller
      */
     public function show($id)
     {
-        //
+        $existingProduit = Produit::find($id);
+        if (!$existingProduit) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Produit non trouvé."
+            ], 404);
+        }else{
+            return response()->json([
+                'status' => 200,
+                'data' => $existingProduit
+            ], 404);
+        }
+
     }
 
     /**
@@ -93,7 +105,7 @@ class PrduitController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -105,7 +117,19 @@ class PrduitController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $existingProduit = Produit::find($id);
+        if (!$existingProduit) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Produit non trouvé."
+            ], 404);
+        }else{
+            $existingProduit->update($request->all());
+            return response()->json([
+                'status' => 404,
+                'data' => "Le produit est modifié avec succés"
+            ], 404);
+        }
     }
 
     /**
@@ -116,6 +140,21 @@ class PrduitController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $existingProduit = Produit::find($id);
+    
+        if (!$existingProduit) {
+            return response()->json([
+                'status' => 404,
+                'message' => "Produit non trouvé."
+            ], 404);
+        } else {
+            $existingProduit->delete();
+    
+            return response()->json([
+                'status' => 200,
+                'message' => "Le produit est supprimé avec succès"
+            ], 200);
+        }
     }
+    
 }
