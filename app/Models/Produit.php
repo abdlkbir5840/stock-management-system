@@ -11,7 +11,7 @@ class Produit extends Model
     protected $table = 'Produit';
 
     // Les colonnes pouvant être remplies massivement
-    protected $fillable = ['quantite','prix_unitaire','description'];
+    protected $fillable = ['code','quantite','prix_unitaire','description'];
     public function commandes()
     {
         return $this->belongsToMany(Commande::class, 'commande_produit', 'produit_id', 'commande_id');
