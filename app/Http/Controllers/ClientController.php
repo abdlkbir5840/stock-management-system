@@ -82,7 +82,18 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        $existingClient= Client::find($id);
+        if (!$existingClient) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Client non trouvé."
+            ], 404);
+        }else{
+            return response()->json([
+                'status' => 200,
+                'data' => $existingClient
+            ], 404);
+        }
     }
 
     /**
@@ -105,7 +116,19 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $existingClient = Client::find($id);
+        if (!$existingClient) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Client non trouvé."
+            ], 404);
+        }else{
+            $existingClient->update($request->all());
+            return response()->json([
+                'status' => 404,
+                'data' => "Le client est modifié avec succés"
+            ], 404);
+        }
     }
 
     /**
@@ -116,6 +139,20 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $existingClient = Client::find($id);
+
+        if (!$existingClient) {
+            return response()->json([
+                'status' => 404,
+                'message' => "Client non trouvé."
+            ], 404);
+        } else {
+            $existingClient->delete();
+
+            return response()->json([
+                'status' => 200,
+                'message' => "Le client est supprimé avec succès"
+            ], 200);
+        }
     }
 }
