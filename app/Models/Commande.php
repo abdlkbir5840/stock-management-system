@@ -1,15 +1,12 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Produit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
-    // Nom de la table associée au modèle
-    protected $table = 'Commande';
-
     // Les colonnes pouvant être remplies massivement
     protected $fillable = ['Date_Commande'];
 

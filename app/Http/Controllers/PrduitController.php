@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produit;
-use App\Models\Fournisseur;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -17,11 +16,19 @@ class PrduitController extends Controller
      */
     public function index()
     {
-        $produits = Produit::with('fournisseurs')->get();
+        // $produits = Produit::with('fournisseurs')->get();
+        $produits = Produit::paginate(10);
         if ($produits->count() > 0) {
+            $response = [
+                'perPage' => $produits->perPage(),
+                'currentPage' => $produits->currentPage(),
+                'totalCount' => $produits->total(),
+                'totalPages' => $produits->lastPage(),
+                'data' => $produits->items(),
+            ];
             $data = [
                 'status' => "200",
-                'data' => $produits
+                'produits' => $response
             ];
             return response()->json($data, 200);
             // return view('produit');
@@ -52,7 +59,7 @@ class PrduitController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required',
+            'code_produit' => 'required',
             'quantite' => 'required',
             'prix_unitaire' => 'required',
             'description' => 'required',
@@ -61,7 +68,7 @@ class PrduitController extends Controller
             // return response()->json(['errors' => $validator->errors()], 422);
             return redirect('/produits')->with('fail', $validator->errors());
         }
-        $existingProduit = Produit::where('code', $request->code)->first();
+        $existingProduit = Produit::where('code_produit', $request->code_produit)->first();
 
         if ($existingProduit) {
             // return response()->json([
@@ -87,7 +94,7 @@ class PrduitController extends Controller
                     'status' => 200,
                     'produit' => $produitSaved
                 ], 200);
-                // return redirect('/produits')->with('success', "le produit s'est ajouté avec succès");
+                return redirect('/produits')->with('success', "le produit s'est ajouté avec succès");
             } else {
                 return response()->json([
                     'status' => 500,
@@ -130,7 +137,7 @@ class PrduitController extends Controller
      */
     public function search(Request $request)
     {
-        $existingProduits = Produit::where('code_produit', 'LIKE', "%$request->code%")->get();
+        $existingProduits = Produit::where('code_produit', 'LIKE', "%$request->code_produit%")->get();
         if ($existingProduits->isEmpty()) {
             // return response()->json([
             //     'status' => 404,

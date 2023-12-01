@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('fournisseurs', function (Blueprint $table) {
             $table->id();
-            $table->string('code_fornisseur');
+            $table->string('code_fournisseur');
             $table->string('nom');
             $table->string('adresse');
             $table->string('tel');

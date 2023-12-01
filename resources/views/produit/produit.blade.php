@@ -29,7 +29,7 @@
         <div class="d-flex justify-content-between ">
             <form method="POST" action="{{ route('produit.search') }}" class="d-flex" role="search">
                 @csrf
-                <input class="form-control me-2" type="search" name="code" placeholder="Search" aria-label="Search">
+                <input class="form-control me-2" type="search" name="code_produit" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-primary" type="submit">Search</button>
             </form>
             <!-- Button trigger modal -->
@@ -50,7 +50,7 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Code</label>
-                                <input type="text" class="form-control" name="code" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" name="code_produit" aria-describedby="emailHelp">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Quantite</label>
@@ -97,7 +97,7 @@
                     @foreach (session('produits') as $produit)
                         <tr>
                             <th scope="row">1</th>
-                            <td>{{ $produit['code'] }}</td>
+                            <td>{{ $produit['code_produit'] }}</td>
                             <td>{{ $produit['quantite'] }}</td>
                             <td>{{ $produit['prix_unitaire'] }}</td>
                             <td>{{ $produit['description'] }}</td>
@@ -110,7 +110,7 @@
                     @foreach ($produits as $produit)
                         <tr>
                             <th scope="row">1</th>
-                            <td>{{ $produit->code }}</td>
+                            <td>{{ $produit->code_produit }}</td>
                             <td>{{ $produit->quantite }}</td>
                             <td>{{ $produit->prix_unitaire }}</td>
                             <td>{{ $produit->description }}</td>
@@ -153,9 +153,9 @@
                                                 <div class="modal-body">
                                                     <div class="mb-3">
                                                         <label class="form-label">Code</label>
-                                                        <input type="text" class="form-control" name="code"
+                                                        <input type="text" class="form-control" name="code_produit"
                                                             aria-describedby="emailHelp"
-                                                            value="{{ $produit->code }}">
+                                                            value="{{ $produit->code_produit }}">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">Quantite</label>
