@@ -30,7 +30,7 @@ class ClientController extends Controller
 //            ],404);
 //        }
         // Récupérer tous les clients depuis la base de données
-        $clients = Client::all();
+        $clients = Client::paginate(10);
 
         // Passer les clients à la vue pour l'affichage
         return view('clients.index', ['clients' => $clients]);
@@ -81,8 +81,8 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
+
 //        $existingClient= Client::find($id);
 //        if (!$existingClient) {
 //            return response()->json([
@@ -96,7 +96,27 @@ class ClientController extends Controller
 //            ], 404);
 //        }
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $code
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $existingClients= Client::where('firstName', 'LIKE', "%$request->firstName%")
+            ->orWhere('lastName', 'LIKE', "%$request->lastName%")
+            ->get();
+        if ($existingClients->isEmpty()) {
 
+            return redirect('/clients')->with('fail', "Client non trouvé");
+
+        } else {
+
+            return redirect('/clients')->with('clients', $existingClients);
+
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *

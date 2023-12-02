@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('commande_produit', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('commande_id');
-            $table->foreign('commande_id')->references('id')->on('Commandes');
+            $table->foreign('commande_id')->references('id')->on('commandes')->onDelete('cascade');
             $table->unsignedBigInteger('produit_id');
-            $table->foreign('produit_id')->references('id')->on('Produit');
+            $table->foreign('produit_id')->references('id')->on('produits')->onDelete('cascade');
             // Ajoutez d'autres colonnes au besoin
             $table->timestamps();
         });

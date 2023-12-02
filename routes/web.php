@@ -1,6 +1,8 @@
 <?php
 
+
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\PrduitController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,9 +19,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('/clients', [ClientController::class, 'index']);
 Route::post('/clients', [ClientController::class, 'store'])->name('client.store');
 Route::get('/clients/{id}', [ClientController::class, 'show'])->name('client.show');
 Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
 Route::put('/clients/{id}', [ClientController::class, 'update'])->name('client.update');
+Route::post('/clients/search', [ClientController::class, 'search'])->name('client.search');
+
+
+Route::get('/produits', [PrduitController::class, 'index']);
+Route::post('produits', [PrduitController::class, 'store'])->name('produit.store');
+Route::delete('/produits/{id}', [PrduitController::class, 'destroy'])->name('produit.destroy');
+Route::get('/produits/{id}', [PrduitController::class, 'edit'])->name('produit.edit');
+Route::put('/produits/{id}', [PrduitController::class, 'update'])->name('produit.update');
+Route::post('/produit/search', [PrduitController::class, 'search'])->name('produit.search');
 

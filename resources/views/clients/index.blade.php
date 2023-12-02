@@ -27,9 +27,18 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
        @endif
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Ajouter client
-    </button>
+    <div class="d-flex justify-content-between ">
+        <form method="POST" action="{{ route('client.search') }}" class="d-flex" role="search">
+            @csrf
+            <input class="form-control me-2" type="search" name="firstName" placeholder="Prénom" aria-label="Search">
+            <input class="form-control me-2" type="search" name="lastName" placeholder="Nom" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit">Recherche</button>
+        </form>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Ajouter client
+        </button>
+    </div>
 
     <!-- Start Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,7 +76,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
                 </div>
                  </form>
             </div>
@@ -107,49 +116,72 @@
 
                 </td>
                 <td> <!-- Edit button and form -->
-                    <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#editModal{{ $client->id }}">
-                        <i class="bi bi-pencil-square" data-toggle="tooltip" data-placement="top" title="Modifier"></i>
+                    <button type="button" class="btn" data-bs-toggle="modal"
+                            data-bs-target="#EditModal{{ $client->id }}">
+                        <i class="bi bi-pencil-square text-danger" style="cursor: pointer"></i>
                     </button>
-                    <div class="modal fade" id="editModal{{ $client->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $client->id }}" aria-hidden="true">
+                    {{-- </form> --}}
+                    <!-- Start Modal Edit Produit -->
+                    <div class="modal fade" id="EditModal{{ $client->id }}" tabindex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="editModalLabel{{ $client->id }}">Modifier un client</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modifier Peoduit
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
-                                <form method="POST" action="{{ route('client.update', [$client->id]) }}">
+                                {{-- @if (\Session::has('produit')) --}}
+                                <form method="POST"
+                                      action="{{ route('client.update', $client->id) }}">
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label class="form-label">Prénom</label>
-                                            <input type="date" class="form-control" name="firstName" value="{{ $client->firstName }}" aria-describedby="emailHelp">
+                                            <input type="text" class="form-control" name="firstName"
+                                                   aria-describedby="emailHelp"
+                                                   value="{{ $client->firstName}}">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Nom</label>
-                                            <input type="number" class="form-control" name="lastName" value="{{ $client->prix }}" aria-describedby="emailHelp">
+                                            <input type="text" class="form-control" name="lastName"
+                                                   aria-describedby="emailHelp"
+                                                   value="{{ $client->lastName }}">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Email</label>
-                                            <input type="number" class="form-control" name="email" value="{{ $client->email }}" aria-describedby="emailHelp">
+                                            <input type="text" class="form-control"
+                                                   name="email" aria-describedby="emailHelp"
+                                                   value="{{ $client->email}}">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Téléphone</label>
-                                            <input type="number" class="form-control" name="phone" value="{{ $client->phone }}" aria-describedby="emailHelp">
+                                            <input type="text" class="form-control" name="phone"
+                                                   aria-describedby="emailHelp"
+                                                   value="{{ $client->phone}}">
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Adresse</label>
-                                            <input type="number" class="form-control" name="adresse" value="{{ $client->adresse }}" aria-describedby="emailHelp">
+                                            <label class="form-label">Address</label>
+                                            <input type="text" class="form-control" name="adresse"
+                                                   aria-describedby="emailHelp"
+                                                   value="{{ $client->adresse}}">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                        <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
                                         <button type="submit" class="btn btn-primary">Modifier</button>
                                     </div>
                                 </form>
+                                {{-- @endif --}}
                             </div>
                         </div>
-                    </div></td>
+                    </div>
+
+
+                   </td>
 
 
             </tr>
