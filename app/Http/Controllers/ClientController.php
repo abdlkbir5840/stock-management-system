@@ -16,19 +16,25 @@ class ClientController extends Controller
      */
     public function index()
     {
+//        $clients = Client::all();
+//        if($clients->count()>0){
+//            $data = [
+//                'status'=>"200",
+//                'data'=>$clients
+//            ];
+//            return response()->json($data, 200);
+//        }else{
+//            return response()->json([
+//                'status'=>"404",
+//                'message'=>"Aucun enregistrement trouvé"
+//            ],404);
+//        }
+        // Récupérer tous les clients depuis la base de données
         $clients = Client::all();
-        if($clients->count()>0){
-            $data = [
-                'status'=>"200",
-                'data'=>$clients
-            ];
-            return response()->json($data, 200);
-        }else{
-            return response()->json([
-                'status'=>"404",
-                'message'=>"Aucun enregistrement trouvé"
-            ],404);
-        }
+
+        // Passer les clients à la vue pour l'affichage
+        return view('clients.index', ['clients' => $clients]);
+//        return redirect('Client.index')->with('success',"Data saved");
     }
 
     /**
@@ -49,29 +55,24 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $existingClient = Client::where('id', $request->id)->first();
+        $existingClient = Client::where('email', $request->email)->first();
 
         if ($existingClient) {
-            return response()->json([
-                'status' => 3402,
-                'Message' => "Client deja existe."
-            ], 200);
+            return redirect('/clients')->with('fail',"Client deja existe");
         }else{
             $client = $request->all();
             $clientSaved = Client::create($client);
+                return redirect('/clients')->with('success',"le client s'est ajout avec succès");
 
-            if ($clientSaved) {
-                return response()->json([
-                    'status' => 200,
-                    'produit' => $clientSaved
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'Internal server error'
-                ], 500);
-            }
+//                return response()->json([
+//                    'status' => 500,
+//                    'message' => 'Internal server error'
+//                ], 500);
+
         }
+
+
+
     }
 
     /**
@@ -82,18 +83,18 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        $existingClient= Client::find($id);
-        if (!$existingClient) {
-            return response()->json([
-                'status' => 404,
-                'Message' => "Client non trouvé."
-            ], 404);
-        }else{
-            return response()->json([
-                'status' => 200,
-                'data' => $existingClient
-            ], 404);
-        }
+//        $existingClient= Client::find($id);
+//        if (!$existingClient) {
+//            return response()->json([
+//                'status' => 404,
+//                'Message' => "Client non trouvé."
+//            ], 404);
+//        }else{
+//            return response()->json([
+//                'status' => 200,
+//                'data' => $existingClient
+//            ], 404);
+//        }
     }
 
     /**
@@ -116,19 +117,24 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $existingClient = Client::find($id);
-        if (!$existingClient) {
-            return response()->json([
-                'status' => 404,
-                'Message' => "Client non trouvé."
-            ], 404);
-        }else{
-            $existingClient->update($request->all());
-            return response()->json([
-                'status' => 404,
-                'data' => "Le client est modifié avec succés"
-            ], 404);
-        }
+//        $existingClient = Client::find($id);
+//        if (!$existingClient) {
+//            return response()->json([
+//                'status' => 404,
+//                'Message' => "Client non trouvé."
+//            ], 404);
+//        }else{
+//            $existingClient->update($request->all());
+//            return response()->json([
+//                'status' => 404,
+//                'data' => "Le client est modifié avec succés"
+//            ], 404);
+//        }
+        $client = Client::findOrFail($id);
+
+        $client->update($request->all());
+
+        return redirect('/clients')->with('success', 'Client mis à jour avec succès.');
     }
 
     /**
@@ -139,20 +145,13 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $existingClient = Client::find($id);
+        // Récupérer le client à supprimer
+        $client = Client::findOrFail($id);
 
-        if (!$existingClient) {
-            return response()->json([
-                'status' => 404,
-                'message' => "Client non trouvé."
-            ], 404);
-        } else {
-            $existingClient->delete();
+        // Supprimer le client
+        $client->delete();
 
-            return response()->json([
-                'status' => 200,
-                'message' => "Le client est supprimé avec succès"
-            ], 200);
-        }
+        // Rediriger avec un message de succès
+        return redirect('/clients')->with('success', 'Client supprimé avec succès.');
     }
 }
