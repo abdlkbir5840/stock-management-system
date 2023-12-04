@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
+<<<<<<< Updated upstream
 
     use HasFactory;
 
+=======
+>>>>>>> Stashed changes
     // Les colonnes pouvant être remplies massivement
     protected $fillable = ['date_commande', 'prix', 'client_id', 'orderStatus_id'];
 
