@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommandeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ Route::get('/', function () {
 });
 
 
+
 //Route::get('/clients', [ClientController::class, 'index']);
 //Route::post('/clients', [ClientController::class, 'store'])->name('client.store');
 //Route::get('/clients/{id}', [ClientController::class, 'show'])->name('client.show');
@@ -33,4 +35,11 @@ Route::get('/produits/{id}', [PrduitController::class, 'edit'])->name('produit.e
 Route::put('/produits/{id}', [PrduitController::class, 'update'])->name('produit.update');
 Route::post('/produit/search', [PrduitController::class, 'search'])->name('produit.search');
 
+
+
+Route::get('/commandes', [CommandeController::class, "index"]);
+Route::post('/commandes', [CommandeController::class, 'store'])->name('commande.store');
+// Update the specified commande in the database
+Route::put('/commandes/{commande}', [CommandeController::class, 'update'])->name('commande.update');
+Route::delete('/commandes/{commande}', [CommandeController::class, 'destroy'])->name('commande.destroy');
 
