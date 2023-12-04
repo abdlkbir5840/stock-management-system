@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
-            $table->date('Date_Commande');
+            $table->date('date_commande')->default(now());
+            $table->double('prix');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('Client');
             $table->timestamps();

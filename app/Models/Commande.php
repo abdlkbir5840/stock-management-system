@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Commande extends Model
 {
     // Nom de la table associée au modèle
-    protected $table = 'Commande';
+    protected $table = 'Commandes';
 
     // Les colonnes pouvant être remplies massivement
-    protected $fillable = ['Date_Commande'];
+    protected $fillable = ['date_commande', 'prix', 'client_id'];
 
     public function client()
     {
@@ -19,7 +19,7 @@ class Commande extends Model
     }
     public function produits()
     {
-        return $this->belongsToMany(Produit::class, 'commande_produit', 'commande_id', 'produit_id');
+        return $this->belongsToMany(Produit::class, 'date_commande', 'prix', 'client_id');
     }
 
 }
