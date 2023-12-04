@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\PrduitController;
+use App\Http\Controllers\CommandeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,8 +50,17 @@ Route::delete('factures/{id}', [FactureController::class, 'destroy']);
 Route::put('factures/{id}', [FactureController::class, 'update']);
 
 
+
+Route::get('commandes', [CommandeController::class, 'index']);
+Route::get('commandes/{id}', [CommandeController::class, 'show']);
+Route::post('commandes', [CommandeController::class, 'store']);
+Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
+Route::put('commandes/{id}', [CommandeController::class, 'update']);
+
+
 Route::get('fournisseurs', [FournisseurController::class, 'index']);
 Route::post('fournisseurs', [FournisseurController::class, 'store']);
 Route::get('fournisseurs/{column}/{param}', [FournisseurController::class, 'show']);
 Route::put('fournisseurs/{id}', [FournisseurController::class, 'update']);
 Route::delete('fournisseurs/{id}', [FournisseurController::class, 'destroy']);
+
