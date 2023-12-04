@@ -109,7 +109,8 @@
                 @else
                     @foreach ($produits as $produit)
                         <tr>
-                            <th scope="row">1</th>
+                            
+                            <th scope="row">{{$produit->id}}</th>
                             <td>{{ $produit->code_produit }}</td>
                             <td>{{ $produit->quantite }}</td>
                             <td>{{ $produit->prix_unitaire }}</td>
@@ -200,7 +201,25 @@
                 @endif
             </tbody>
         </table>
-
+        <nav aria-label="...">
+            <ul class="pagination">
+              <li class="page-item" {{ $currentPage == 1 ? 'disabled' : '' }}>
+                <a class="page-link" href="/produits?page={{$currentPage-1}}">Previous</a>
+              </li>
+              @for ($i = max(1, $currentPage - 5); $i <= min($currentPage + 4, $totalPages); $i++)
+                @if($i==$currentPage)
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="/produits?page={{$i}}">{{$i}}</a>
+                    </li>
+                @else
+                <li class="page-item"><a class="page-link" href="/produits?page={{$i}}">{{$i}}</a></li>
+                @endif
+              @endfor
+              <li class="page-item" {{ $currentPage == $totalPages ? 'disabled' : '' }}>
+                <a class="page-link" href="/produits?page={{$currentPage+1}}">Next</a>
+              </li>
+            </ul>
+          </nav>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

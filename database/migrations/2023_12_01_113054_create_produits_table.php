@@ -19,6 +19,9 @@ return new class extends Migration
             $table->integer('quantite');
             $table->double('prix_unitaire');
             $table->string('description');
+            $table->unsignedBigInteger('categorie_id')->nullable()->default(null);
+            $table->foreign('categorie_id')->references('id')
+                ->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

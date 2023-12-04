@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\PrduitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +34,8 @@ Route::delete('clients/{id}', [ClientController::class, 'destroy']);
 Route::put('clients/{id}', [ClientController::class, 'update']);
 
 
+Route::get('fournisseurs', [FournisseurController::class, 'index']);
+Route::post('fournisseurs', [FournisseurController::class, 'store']);
+Route::get('fournisseurs/{column}/{param}', [FournisseurController::class, 'show']);
+Route::put('fournisseurs/{id}', [FournisseurController::class, 'update']);
+Route::delete('fournisseurs/{id}', [FournisseurController::class, 'destroy']);

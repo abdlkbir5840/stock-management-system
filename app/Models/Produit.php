@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Commande;
 use App\Models\Fournisseur;
+use App\Models\Categorie;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,5 +22,9 @@ class Produit extends Model
     public function fournisseurs()
     {
         return $this->belongsToMany(Fournisseur::class, 'fournisseur_produit')->withPivot('fournisseur_id', 'produit_id', 'qte_entree', 'date_entree');
+    }
+
+    public function categorie(){
+        return $this->belongsTo(Categorie::class);
     }
 }
