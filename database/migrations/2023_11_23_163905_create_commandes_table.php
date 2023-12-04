@@ -18,7 +18,10 @@ return new class extends Migration
             $table->date('date_commande')->default(now());
             $table->double('prix');
             $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('Client')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('client')->onDelete('cascade');
+            
+            $table->unsignedBigInteger('orderStatus_id');
+            $table->foreign('orderStatus_id')->references('id')->on('order_statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }
