@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('commandes', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->date('date_commande')->default(now());
-            $table->double('prix');
-            $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('Client')->onDelete('cascade');
+            $table->string('nom');
+            $table->text('description');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commandes');
+        Schema::dropIfExists('categories');
     }
 };
