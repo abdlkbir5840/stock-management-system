@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
-<<<<<<< Updated upstream
 
     use HasFactory;
 
-=======
->>>>>>> Stashed changes
     // Les colonnes pouvant être remplies massivement
     protected $fillable = ['date_commande', 'prix', 'client_id', 'orderStatus_id'];
 
@@ -27,7 +24,7 @@ class Commande extends Model
     {
         return $this->belongsToMany(Produit::class, 'date_commande', 'prix', 'client_id');
     }
-    public function factures(): BelongsTo
+    public function factures()
     {
         return $this->belongsTo(Facture::class);
     }
