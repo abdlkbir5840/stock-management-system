@@ -20,12 +20,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/clients', [ClientController::class, 'index']);
-Route::post('/clients', [ClientController::class, 'store'])->name('client.store');
-Route::get('/clients/{id}', [ClientController::class, 'show'])->name('client.show');
-Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
-Route::put('/clients/{id}', [ClientController::class, 'update'])->name('client.update');
-Route::post('/clients/search', [ClientController::class, 'search'])->name('client.search');
+//Route::get('/clients', [ClientController::class, 'index']);
+//Route::post('/clients', [ClientController::class, 'store'])->name('client.store');
+//Route::get('/clients/{id}', [ClientController::class, 'show'])->name('client.show');
+//Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
+//Route::put('/clients/{id}', [ClientController::class, 'update'])->name('client.update');
+//Route::post('/clients/search', [ClientController::class, 'search'])->name('client.search');
 
 
 Route::get('/produits', [PrduitController::class, 'index']);

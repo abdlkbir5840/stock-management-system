@@ -18,5 +18,9 @@ class Commande extends Model
     {
         return $this->belongsToMany(Produit::class, 'commande_produit', 'commande_id', 'produit_id');
     }
+    public function factures(): BelongsTo
+    {
+        return $this->belongsTo(Facture::class);
+    }
 
 }

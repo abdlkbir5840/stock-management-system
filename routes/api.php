@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\PrduitController;
 use Illuminate\Http\Request;
@@ -35,11 +36,17 @@ Route::delete('produits/{id}', [PrduitController::class, 'destroy']);
 
 
 
-//Route::get('clients', [ClientController::class, 'index']);
-//Route::post('clients', [ClientController::class, 'store']);
-//Route::get('clients/{id}', [ClientController::class, 'show']);
-//Route::delete('clients/{id}', [ClientController::class, 'destroy']);
-//Route::put('clients/{id}', [ClientController::class, 'update']);
+Route::get('clients', [ClientController::class, 'index']);
+Route::post('clients', [ClientController::class, 'store']);
+Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
+Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+Route::put('clients/{id}', [ClientController::class, 'update']);
+
+Route::get('factures', [FactureController::class, 'index']);
+Route::post('factures', [FactureController::class, 'store']);
+Route::get('factures/{column}/{param}', [FactureController::class, 'show']);
+Route::delete('factures/{id}', [FactureController::class, 'destroy']);
+Route::put('factures/{id}', [FactureController::class, 'update']);
 
 
 Route::get('fournisseurs', [FournisseurController::class, 'index']);
