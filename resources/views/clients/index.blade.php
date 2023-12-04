@@ -96,6 +96,22 @@
         </tr>
         </thead>
         <tbody>
+        @if (session('clients'))
+            <!-- Display search results -->
+            @foreach (session('clients') as $client)
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{ $client['firstName'] }}</td>
+                    <td>{{ $client['lastName'] }}</td>
+                    <td>{{ $client['email'] }}</td>
+                    <td>{{ $client['phone'] }}</td>
+                    <td>{{ $client['adresse'] }}</td>
+                    <td>
+                        <!-- Add any additional columns or actions for search results -->
+                    </td>
+                </tr>
+            @endforeach
+        @else
         @foreach ($clients as $client)
             <tr>
                 <th scope="row">1</th>
@@ -186,6 +202,7 @@
 
             </tr>
         @endforeach
+        @endif
         </tbody>
     </table>
 
