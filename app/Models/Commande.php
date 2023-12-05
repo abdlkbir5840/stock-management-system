@@ -8,6 +8,7 @@ class Commande extends Model
 {
 
 
+
     use HasFactory;
 
     // Les colonnes pouvant être remplies massivement
@@ -25,7 +26,7 @@ class Commande extends Model
     {
         return $this->belongsToMany(Produit::class, 'date_commande', 'prix', 'client_id');
     }
-    public function factures(): BelongsTo
+    public function factures()
     {
         return $this->belongsTo(Facture::class);
     }
