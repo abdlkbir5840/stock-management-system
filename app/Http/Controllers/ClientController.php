@@ -117,7 +117,7 @@ class ClientController extends Controller
      */
     public function show($column, $param){
 
-        $existingClients =Client::where($column, 'LIKE', "%$param%")->paginate(10);;
+        $existingClients =Client::where($column, 'LIKE', "%$param%")->paginate(10);
 
         if (!$existingClients) {
             return response()->json([
