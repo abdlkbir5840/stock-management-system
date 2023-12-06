@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('commande_id')->references('id')->on('commandes')->onDelete('cascade');
             $table->unsignedBigInteger('produit_id');
             $table->foreign('produit_id')->references('id')->on('produits')->onDelete('cascade');
-            // Ajoutez d'autres colonnes au besoin
+            $table->unsignedBigInteger('quantity');
+            $table->unsignedBigInteger('price');
             $table->timestamps();
         });
     }

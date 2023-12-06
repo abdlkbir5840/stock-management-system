@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\FactureController;
 
 
@@ -10,6 +11,7 @@ use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PackController;
 use App\Http\Controllers\PrduitController;
+use App\Http\Controllers\Produit_PackController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +58,12 @@ Route::get('packs/{column}/{param}', [PackController::class, 'show']);
 Route::delete('packs/{id}', [PackController::class, 'destroy']);
 Route::put('packs/{id}', [PackController::class, 'update']);
 
+Route::get('packProduits', [Produit_PackController::class, 'index']);
+Route::post('packProduits', [Produit_PackController::class, 'store']);
+Route::get('packProduits/{column}/{param}', [Produit_PackController::class, 'show']);
+Route::delete('packProduits/{pack_id}/{produit_id}', [Produit_PackController::class, 'destroy']);
+Route::put('packProduits/{id}', [Produit_PackController::class, 'update']);
+
 
 
 
@@ -78,6 +86,12 @@ Route::get('orderStatuses/{id}', [OrderStatusController::class, 'show']);
 Route::post('orderStatuses', [OrderStatusController::class, 'store']);
 Route::put('orderStatuses/{id}', [OrderStatusController::class, 'update']);
 Route::delete('orderStatuses/{id}', [OrderStatusController::class, 'destroy']);
+
+Route::get('discounts', [DiscountController::class, 'index']);
+Route::get('discounts/{id}', [DiscountController::class, 'show']);
+Route::post('discounts', [DiscountController::class, 'store']);
+Route::put('discounts/{id}', [DiscountController::class, 'update']);
+Route::delete('discounts/{id}', [DiscountController::class, 'destroy']);
 
 
 Route::get('categories', [CategorieController::class, 'index']);
