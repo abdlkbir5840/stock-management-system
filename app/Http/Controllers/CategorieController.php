@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategorieController extends Controller
 {
@@ -15,7 +16,7 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        $categories = Categorie::paginate(5);
+        $categories = Categorie::paginate(10);
         if ($categories->count() > 0) {
             $response = [
                 'perPage' => $categories->perPage(),
@@ -26,17 +27,9 @@ class CategorieController extends Controller
             ];
             $data = [
                 'status' => "200",
-                'produits' => $response
+                'categories' => $response
             ];
             return response()->json($data, 200);
-            // return view(
-            //     'produit.produit',
-            //     [
-            //         'produits' =>  $response['data'],
-            //         'totalPages' => $response['totalPages'],
-            //         'currentPage' => $response['currentPage']
-            //     ]
-            // );
         } else {
             return response()->json([
                 'status' => "404",
@@ -63,7 +56,35 @@ class CategorieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nom' => 'required',
+            'description' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $existingCategorie = Categorie::where('nom', $request->nom)->first();
+
+        if ($existingCategorie) {
+            return response()->json([
+                'status' => 409,
+                'Message' => "Categorie deja existe."
+            ], 409);
+        } else {
+            $categorieSaved = Categorie::create($request->all());
+
+            if ($categorieSaved) {
+                return response()->json([
+                    'status' => 200,
+                    'categorie' => $categorieSaved
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 500,
+                    'message' => 'Internal server error'
+                ], 500);
+            }
+        }
     }
 
     /**
@@ -72,9 +93,30 @@ class CategorieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($column, $param)
     {
-        //
+        $existingCategorie = Categorie::where($column, 'LIKE', "%$param%")->paginate(5);;
+
+        if (!$existingCategorie) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Categorie non trouvé."
+            ], 404);
+        } else {
+            $response = [
+                'perPage' => $existingCategorie->perPage(),
+                'currentPage' => $existingCategorie->currentPage(),
+                'totalCount' => $existingCategorie->total(),
+                'totalPages' => $existingCategorie->lastPage(),
+                'data' => $existingCategorie->items(),
+            ];
+            $data = [
+                'status' => "200",
+                'Message' => "La recherche par $column",
+                'categories' => $response
+            ];
+            return response()->json($data, 200);
+        }
     }
 
     /**
@@ -97,7 +139,27 @@ class CategorieController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $existingCategorie = Categorie::find($id);
+        if (!$existingCategorie) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Produit non trouvé."
+            ], 404);
+        } else {
+            $categorieMatchCode = Categorie::where('nom', $request->nom)->first();
+            if ($categorieMatchCode) {
+                return response()->json([
+                    'status' => 404,
+                    'Message' => "Categorie avec le code $request->nom déja existe ."
+                ], 404);
+            } else {
+                $existingCategorie->update($request->all());
+                return response()->json([
+                    'status' => 200,
+                    'data' => "La Categorie est modifié avec succés"
+                ], 200);
+            }
+        }
     }
 
     /**
@@ -108,6 +170,20 @@ class CategorieController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $existingCategorie = Categorie::find($id);
+
+        if (!$existingCategorie) {
+            return response()->json([
+                'status' => 404,
+                'message' => "Categorie non trouvé."
+            ], 404);
+        } else {
+            $existingCategorie->delete();
+
+            return response()->json([
+                'status' => 200,
+                'message' => "La Categorie est supprimé avec succès"
+            ], 200);
+        }
     }
 }

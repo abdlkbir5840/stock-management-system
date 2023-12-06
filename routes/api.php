@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FactureController;
 
@@ -80,5 +80,9 @@ Route::put('orderStatuses/{id}', [OrderStatusController::class, 'update']);
 Route::delete('orderStatuses/{id}', [OrderStatusController::class, 'destroy']);
 
 
-
+Route::get('categories', [CategorieController::class, 'index']);
+Route::post('categories', [CategorieController::class, 'store']);
+Route::get('categories/{column}/{param}', [CategorieController::class, 'show']);
+Route::put('categories/{id}', [CategorieController::class, 'update']);
+Route::delete('categories/{id}', [CategorieController::class, 'destroy']);
 
