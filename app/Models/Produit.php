@@ -25,7 +25,7 @@ class Produit extends Model
     }
     public function packs()
     {
-        return $this->belongsToMany(Pack::class, 'produit-pack')->withPivot( 'produit_id','pack_id', 'qte');
+        return $this->belongsToMany(Pack::class, 'produit_pack')->withPivot( 'produit_id','pack_id', 'qte');
     }
 
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\PackController;
 use App\Http\Controllers\PrduitController;
+use App\Http\Controllers\Produit_PackController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +56,12 @@ Route::post('packs', [PackController::class, 'store']);
 Route::get('packs/{column}/{param}', [PackController::class, 'show']);
 Route::delete('packs/{id}', [PackController::class, 'destroy']);
 Route::put('packs/{id}', [PackController::class, 'update']);
+
+Route::get('packProduits', [Produit_PackController::class, 'index']);
+Route::post('packProduits', [Produit_PackController::class, 'store']);
+Route::get('packProduits/{column}/{param}', [Produit_PackController::class, 'show']);
+Route::delete('packProduits/{pack_id}/{produit_id}', [Produit_PackController::class, 'destroy']);
+Route::put('packProduits/{id}', [Produit_PackController::class, 'update']);
 
 
 
