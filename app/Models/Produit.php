@@ -23,6 +23,11 @@ class Produit extends Model
     {
         return $this->belongsToMany(Fournisseur::class, 'fournisseur_produit')->withPivot('fournisseur_id', 'produit_id', 'qte_entree', 'date_entree');
     }
+    public function packs()
+    {
+        return $this->belongsToMany(Pack::class, 'produit-pack')->withPivot( 'produit_id','pack_id', 'qte');
+    }
+
 
     public function categorie(){
         return $this->belongsTo(Categorie::class);

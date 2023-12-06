@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
-
     use HasFactory;
 
     // Les colonnes pouvant être remplies massivement

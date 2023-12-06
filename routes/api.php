@@ -8,6 +8,7 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PackController;
 use App\Http\Controllers\PrduitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,12 @@ Route::post('factures', [FactureController::class, 'store']);
 Route::get('factures/{column}/{param}', [FactureController::class, 'show']);
 Route::delete('factures/{id}', [FactureController::class, 'destroy']);
 Route::put('factures/{id}', [FactureController::class, 'update']);
+
+Route::get('packs', [PackController::class, 'index']);
+Route::post('packs', [PackController::class, 'store']);
+Route::get('packs/{column}/{param}', [PackController::class, 'show']);
+Route::delete('packs/{id}', [PackController::class, 'destroy']);
+Route::put('packs/{id}', [PackController::class, 'update']);
 
 
 
