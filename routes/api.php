@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FactureController;
 
@@ -39,11 +40,21 @@ Route::delete('produits/{id}', [PrduitController::class, 'destroy']);
 
 
 
-Route::get('clients', [ClientController::class, 'index']);
-Route::post('clients', [ClientController::class, 'store']);
-Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
-Route::delete('clients/{id}', [ClientController::class, 'destroy']);
-Route::put('clients/{id}', [ClientController::class, 'update']);
+//Route::get('clients', [ClientController::class, 'index']);
+//Route::post('clients', [ClientController::class, 'store']);
+//Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
+//Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+//Route::put('clients/{id}', [ClientController::class, 'update']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::group(['middleware'=> ['auth:sanctum']], function () {
+    Route::get('clients', [ClientController::class, 'index']);
+    Route::post('clients', [ClientController::class, 'store']);
+    Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
+    Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+    Route::put('clients/{id}', [ClientController::class, 'update']);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
 Route::get('factures', [FactureController::class, 'index']);
 Route::post('factures', [FactureController::class, 'store']);
