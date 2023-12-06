@@ -19,9 +19,12 @@ return new class extends Migration
             $table->double('prix');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('client')->onDelete('cascade');
-            
+
             $table->unsignedBigInteger('orderStatus_id');
             $table->foreign('orderStatus_id')->references('id')->on('order_statuses')->onDelete('cascade');
+
+            $table->unsignedBigInteger('discount_id')->nullable();
+            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
             $table->timestamps();
         });
     }
