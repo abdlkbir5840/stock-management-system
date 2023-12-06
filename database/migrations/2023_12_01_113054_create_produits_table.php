@@ -22,6 +22,9 @@ return new class extends Migration
             $table->unsignedBigInteger('categorie_id')->nullable()->default(null);
             $table->foreign('categorie_id')->references('id')
                 ->on('categories')->onDelete('cascade');
+            $table->unsignedBigInteger('discount_id')->nullable()->default(null);
+            $table->foreign('discount_id')->references('id')
+                ->on('discounts')->onDelete('cascade');
             $table->timestamps();
         });
     }

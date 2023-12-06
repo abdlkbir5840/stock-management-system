@@ -16,29 +16,38 @@ class PrduitController extends Controller
      */
     public function index()
     {
-        $produits = Produit::with('fournisseurs')->paginate(5);
-        // $produits = Produit::paginate(5);
+        $produits = Produit::with('fournisseurs', 'categorie')->paginate(5);
+
         if (!$produits->isEmpty()) {
-            $response = [
-                'perPage' => $produits->perPage(),
-                'currentPage' => $produits->currentPage(),
-                'totalCount' => $produits->total(),
-                'totalPages' => $produits->lastPage(),
-                'data' => $produits->items(),
-            ];
-            $data = [
-                'status' => "200",
-                'produits' => $response
-            ];
-            return response()->json($data, 200);
-            // return view(
-            //     'produit.produit',
-            //     [
-            //         'produits' =>  $response['data'],
-            //         'totalPages' => $response['totalPages'],
-            //         'currentPage' => $response['currentPage']
-            //     ]
-            // );
+            return response()->json([
+                'status' => 200,
+                'produits' => [
+                    'perPage' => $produits->perPage(),
+                    'currentPage' => $produits->currentPage(),
+                    'totalCount' => $produits->total(),
+                    'totalPages' => $produits->lastPage(),
+                    'data' => collect($produits->items())->map(function ($produit) {
+                        return [
+                            'id' => $produit->id,
+                            'code_produit' => $produit->code_produit,
+                            'quantite' => $produit->quantite,
+                            'prix_unitaire' => $produit->prix_unitaire,
+                            'description' => $produit->description,
+                            'categorie_id' => $produit->categorie_id,
+                            'categorie_nom' => $produit->categorie->nom,
+                            'fournisseurs' => $produit->fournisseurs->map(function ($fournisseur) {
+                                return [
+                                    'id' => $fournisseur->id,
+                                    'code_fournisseur' => $fournisseur->code_fournisseur,
+                                    'nom' => $fournisseur->nom,
+                                ];
+                            }),
+                            'created_at' => $produit->created_at,
+                            'updated_at' => $produit->updated_at,
+                        ];
+                    }),
+                ],
+            ], 200);
         } else {
             return response()->json([
                 'status' => "404",
@@ -66,35 +75,42 @@ class PrduitController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'code_produit' => 'required',
-            'quantite' => 'required',
+            'qte_entree' => 'required',
             'prix_unitaire' => 'required',
             'description' => 'required',
+            'categorie_id' => 'required|exists:categories,id',
+            'fournisseur_id' => 'required|exists:fournisseurs,id',
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
-            // return redirect('/produits')->with('fail', $validator->errors());
         }
         $existingProduit = Produit::where('code_produit', $request->code_produit)->first();
 
         if ($existingProduit) {
+            //handle quantite 
             return response()->json([
                 'status' => 409,
                 'Message' => "Produit deja existe."
             ], 409);
-            // return redirect('/produits')->with('fail', "Produit deja existe");
         } else {
-            $produitSaved = Produit::create($request->all());
-            // $produit->fournisseurs()->attach($request->fournisseur_id, [
-            //     'qte_entree' => $request->qte_entree,
-            //     'date_entree' => $request->date_entree,
-            // ]);
-
+            
+            $produitSaved = Produit::create([
+                'code_produit' => $request->code_produit,
+                'quantite' => $request->qte_entree,
+                'prix_unitaire' => $request->prix_unitaire,
+                'description' => $request->description,
+                'categorie_id' => $request->categorie_id,
+            ]);
+            $produitSaved->fournisseurs()->attach($request->fournisseur_id, [
+                'qte_entree' => $request->qte_entree, 
+                'date_entree' => now(), 
+            ]);
+        
             if ($produitSaved) {
                 return response()->json([
                     'status' => 200,
                     'produit' => $produitSaved
                 ], 200);
-                // return redirect('/produits')->with('success', "le produit s'est ajouté avec succès");
             } else {
                 return response()->json([
                     'status' => 500,
@@ -113,19 +129,45 @@ class PrduitController extends Controller
      */
     public function show($column, $param)
     {
-        $existingProduits = Produit::where($column, 'LIKE', "%$param%")->with('fournisseurs')->get();
+        $produits = Produit::where($column, 'LIKE', "%$param%")->with('fournisseurs','categorie')->paginate(5);
 
-        if (!$existingProduits) {
+        if (!$produits) {
             return response()->json([
                 'status' => 404,
                 'Message' => "Produit non trouvé."
             ], 404);
         } else {
-            return response()->json([
-                'status' => 200,
-                'Message' => "La recherche par $column",
-                'data' => $existingProduits
-            ], 200);
+            if (!$produits->isEmpty()) {
+                return response()->json([
+                    'status' => 200,
+                    'produits' => [
+                        'perPage' => $produits->perPage(),
+                        'currentPage' => $produits->currentPage(),
+                        'totalCount' => $produits->total(),
+                        'totalPages' => $produits->lastPage(),
+                        'data' => collect($produits->items())->map(function ($produit) {
+                            return [
+                                'id' => $produit->id,
+                                'code_produit' => $produit->code_produit,
+                                'quantite' => $produit->quantite,
+                                'prix_unitaire' => $produit->prix_unitaire,
+                                'description' => $produit->description,
+                                'categorie_id' => $produit->categorie_id,
+                                'categorie_nom' => $produit->categorie->nom,
+                                'fournisseurs' => $produit->fournisseurs->map(function ($fournisseur) {
+                                    return [
+                                        'id' => $fournisseur->id,
+                                        'code_fournisseur' => $fournisseur->code_fournisseur,
+                                        'nom' => $fournisseur->nom,
+                                    ];
+                                }),
+                                'created_at' => $produit->created_at,
+                                'updated_at' => $produit->updated_at,
+                            ];
+                        }),
+                    ],
+                ], 200);
+            } 
         }
     }
 
@@ -183,7 +225,11 @@ class PrduitController extends Controller
         } else {
             $produitmatchCode = Produit::where('code_produit', $request->code)->first();
             if ($produitmatchCode) {
-                return redirect('/produits')->with('fail', "Produit avec le code $request->code déja existe .");
+                return response()->json([
+                    'status' => 404,
+                    'Message' => "Produit avec le code $request->code déja existe ."
+                ], 404);
+                // return redirect('/produits')->with('fail', "Produit avec le code $request->code déja existe .");
             } else {
                 $existingProduit->update($request->all());
                 // return response()->json([

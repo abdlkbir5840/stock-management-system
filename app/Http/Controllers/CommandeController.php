@@ -47,21 +47,28 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
-        $commandeData = $request->all();
+        $commandeData = $request->only(['','date_commande', 'prix', 'client_id', 'orderStatus_id', 'discount_id']);
+        $produitsData = $request->input('produits', []);
 
-        // Set date_commande if not provided in the request
         if (!isset($commandeData['date_commande'])) {
-            $commandeData['date_commande'] = now()->toDateString(); // or use the appropriate value
+            $commandeData['date_commande'] = now()->toDateString();
         }
 
         $commandeSaved = Commande::create($commandeData);
+
+        if ($commandeSaved) {
+            $commandeId = $commandeSaved->id;
+
+            if (!empty($produitsData)) {
+                $commandeSaved->produits()->attach($produitsData, ['commande_id' => $commandeId]);
+            }
+        }
 
         if ($commandeSaved) {
             return response()->json([
                 'status' => 200,
                 'commande' => $commandeSaved
             ], 200);
-            //return redirect('/commandes')->with('success','Data saved');
         } else {
             return response()->json([
                 'status' => 500,
@@ -69,6 +76,8 @@ class CommandeController extends Controller
             ], 500);
         }
     }
+
+
 
 
     /**
@@ -154,7 +163,6 @@ class CommandeController extends Controller
                 'status' => 200,
                 'message' => "La commande est supprimé avec succès"
             ], 200);
-            //return redirect('/commandes')->with('success', 'Commande supprimé avec succès.');
         }
     }
 }
