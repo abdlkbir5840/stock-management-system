@@ -16,7 +16,7 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        $categories = Categorie::paginate(10);
+        $categories = Categorie::paginate(5);
         if ($categories->count() > 0) {
             $response = [
                 'perPage' => $categories->perPage(),
@@ -156,7 +156,7 @@ class CategorieController extends Controller
                 $existingCategorie->update($request->all());
                 return response()->json([
                     'status' => 200,
-                    'data' => "La Categorie est modifié avec succés"
+                    'data' => $existingCategorie
                 ], 200);
             }
         }

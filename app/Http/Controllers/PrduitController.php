@@ -29,6 +29,8 @@ class PrduitController extends Controller
                     'data' => collect($produits->items())->map(function ($produit) {
                         return [
                             'id' => $produit->id,
+                            'nom' => $produit->nom,
+                            'image' => $produit->image,
                             'code_produit' => $produit->code_produit,
                             'quantite' => $produit->quantite,
                             'prix_unitaire' => $produit->prix_unitaire,
@@ -96,6 +98,8 @@ class PrduitController extends Controller
             
             $produitSaved = Produit::create([
                 'code_produit' => $request->code_produit,
+                'nom' => $request->nom,
+                'image' => $request->image,
                 'quantite' => $request->qte_entree,
                 'prix_unitaire' => $request->prix_unitaire,
                 'description' => $request->description,
@@ -148,6 +152,8 @@ class PrduitController extends Controller
                         'data' => collect($produits->items())->map(function ($produit) {
                             return [
                                 'id' => $produit->id,
+                                'nom' => $produit->nom,
+                                'image' => $produit->image,
                                 'code_produit' => $produit->code_produit,
                                 'quantite' => $produit->quantite,
                                 'prix_unitaire' => $produit->prix_unitaire,
@@ -232,11 +238,11 @@ class PrduitController extends Controller
                 // return redirect('/produits')->with('fail', "Produit avec le code $request->code déja existe .");
             } else {
                 $existingProduit->update($request->all());
-                // return response()->json([
-                //     'status' => 404,
-                //     'data' => "Le produit est modifié avec succés"
-                // ], 404);
-                return redirect('/produits')->with('success', "le produit s'est modifier avec succès");
+                return response()->json([
+                    'status' => 200,
+                    'data' => $existingProduit
+                ], 200);
+                // return redirect('/produits')->with('success', "le produit s'est modifier avec succès");
             }
         }
     }
@@ -252,19 +258,19 @@ class PrduitController extends Controller
         $existingProduit = Produit::find($id);
 
         if (!$existingProduit) {
-            // return response()->json([
-            //     'status' => 404,
-            //     'message' => "Produit non trouvé."
-            // ], 404);
-            return redirect('/produits')->with('fail', "Produit non trouvé");
+            return response()->json([
+                'status' => 404,
+                'message' => "Produit non trouvé."
+            ], 404);
+            // return redirect('/produits')->with('fail', "Produit non trouvé");
         } else {
             $existingProduit->delete();
 
-            // return response()->json([
-            //     'status' => 200,
-            //     'message' => "Le produit est supprimé avec succès"
-            // ], 200);
-            return redirect('/produits')->with('success', "Le produit est supprimé avec succès");
+            return response()->json([
+                'status' => 200,
+                'message' => "Le produit est supprimé avec succès"
+            ], 200);
+            // return redirect('/produits')->with('success', "Le produit est supprimé avec succès");
         }
     }
 }

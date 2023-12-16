@@ -15,7 +15,7 @@ class FournisseurController extends Controller
      */
     public function index()
     {
-        $fournisseurs = Fournisseur::paginate(10);
+        $fournisseurs = Fournisseur::paginate(5);
         if ($fournisseurs->count() > 0) {
             $response = [
                 'perPage' => $fournisseurs->perPage(),
@@ -104,7 +104,7 @@ class FournisseurController extends Controller
      */
     public function show($column, $param)
     {
-        $existingFournisseurs = Fournisseur::where($column, 'LIKE', "%$param%")->paginate(10);
+        $existingFournisseurs = Fournisseur::where($column, 'LIKE', "%$param%")->paginate(5);
 
         if ($existingFournisseurs->count() == 0) {
             $response = [
@@ -123,7 +123,7 @@ class FournisseurController extends Controller
             $data = [
                 'status' => 500,
                 'Message' => "La recherche par $column",
-                'fournisseurs' => $response
+                'fournisseur' => $response
             ];
             return response()->json($data, 200);
         }
@@ -157,22 +157,22 @@ class FournisseurController extends Controller
             ];
             return response()->json($response, 404);
         }
-        $validators = Validator::make($request->all(), [
-            'code_fournisseur' => 'required',
-            'nom' => 'required',
-            'adresse' => 'required',
-            'tel' => 'required|numeric|digits:10',
-            'mail' => 'required|email',
-            'fax' => 'required|numeric|digits:10',
-        ]);
-        if ($validators->fails()) {
-            $response = [
-                "status" => 422,
-                "message" => "La validation de la requête a échoué.",
-                "errors" => $validators->errors()
-            ];
-            return response()->json($response, 422);
-        }
+        // $validators = Validator::make($request->all(), [
+        //     'code_fournisseur' => 'required',
+        //     'nom' => 'required',
+        //     'adresse' => 'required',
+        //     'tel' => 'required|numeric|digits:10',
+        //     'mail' => 'required|email',
+        //     'fax' => 'required|numeric|digits:10',
+        // ]);
+        // if ($validators->fails()) {
+        //     $response = [
+        //         "status" => 422,
+        //         "message" => "La validation de la requête a échoué.",
+        //         "errors" => $validators->errors()
+        //     ];
+        //     return response()->json($response, 422);
+        // }
         $existingFournisseur->update($request->all());
         $response = [
             "status" => 200,
