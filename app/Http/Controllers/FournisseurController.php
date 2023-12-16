@@ -26,7 +26,7 @@ class FournisseurController extends Controller
             ];
             $data = [
                 'status' => "200",
-                'produits' => $response
+                'fournisseur' => $response
             ];
             return response()->json($data, 200);
         } else {

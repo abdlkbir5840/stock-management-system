@@ -50,14 +50,16 @@ Route::delete('produits/{id}', [PrduitController::class, 'destroy']);
 //Route::put('clients/{id}', [ClientController::class, 'update']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
-Route::group(['middleware'=> ['auth:sanctum']], function () {
-    Route::get('clients', [ClientController::class, 'index']);
-    Route::post('clients', [ClientController::class, 'store']);
-    Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
-    Route::delete('clients/{id}', [ClientController::class, 'destroy']);
-    Route::put('clients/{id}', [ClientController::class, 'update']);
-    Route::post('logout', [AuthController::class, 'logout']);
-});
+//Route::group(['middleware'=> ['auth:sanctum']], function () {
+//
+//    Route::post('logout', [AuthController::class, 'logout']);
+//});
+Route::get('clients', [ClientController::class, 'index']);
+Route::post('clients', [ClientController::class, 'store']);
+Route::get('clients/{column1}/{param1}', [ClientController::class, 'show']);
+Route::get('clients/{column1}/{param1}/{column2}/{param2}', [ClientController::class, 'show_two']);
+Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+Route::put('clients/{id}', [ClientController::class, 'update']);
 
 Route::get('factures', [FactureController::class, 'index']);
 Route::post('factures', [FactureController::class, 'store']);
@@ -70,6 +72,7 @@ Route::post('packs', [PackController::class, 'store']);
 Route::get('packs/{column}/{param}', [PackController::class, 'show']);
 Route::delete('packs/{id}', [PackController::class, 'destroy']);
 Route::put('packs/{id}', [PackController::class, 'update']);
+
 
 Route::get('packProduits', [Produit_PackController::class, 'index']);
 Route::post('packProduits', [Produit_PackController::class, 'store']);
