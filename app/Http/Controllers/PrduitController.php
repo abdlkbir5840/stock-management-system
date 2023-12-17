@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Fournisseur;
 use App\Models\Produit;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -16,7 +17,9 @@ class PrduitController extends Controller
      */
     public function index()
     {
-        $produits = Produit::with('fournisseurs', 'categorie')->paginate(5);
+        $produits = Produit::with(['fournisseurs' => function ($query) {
+            $query->withPivot('qte_entree');
+        }, 'categorie'])->paginate(8);
 
         if (!$produits->isEmpty()) {
             return response()->json([
@@ -42,6 +45,7 @@ class PrduitController extends Controller
                                     'id' => $fournisseur->id,
                                     'code_fournisseur' => $fournisseur->code_fournisseur,
                                     'nom' => $fournisseur->nom,
+                                    'qte_entree' => $fournisseur->pivot->qte_entree, // Ajout de la quantité spécifique à chaque fournisseur
                                 ];
                             }),
                             'created_at' => $produit->created_at,
@@ -76,6 +80,8 @@ class PrduitController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'nom' => 'required',
+            'image' => 'required',
             'code_produit' => 'required',
             'qte_entree' => 'required',
             'prix_unitaire' => 'required',
@@ -89,13 +95,13 @@ class PrduitController extends Controller
         $existingProduit = Produit::where('code_produit', $request->code_produit)->first();
 
         if ($existingProduit) {
-            //handle quantite 
+            //handle quantite
             return response()->json([
                 'status' => 409,
                 'Message' => "Produit deja existe."
             ], 409);
         } else {
-            
+
             $produitSaved = Produit::create([
                 'code_produit' => $request->code_produit,
                 'nom' => $request->nom,
@@ -106,10 +112,10 @@ class PrduitController extends Controller
                 'categorie_id' => $request->categorie_id,
             ]);
             $produitSaved->fournisseurs()->attach($request->fournisseur_id, [
-                'qte_entree' => $request->qte_entree, 
-                'date_entree' => now(), 
+                'qte_entree' => $request->qte_entree,
+                'date_entree' => now(),
             ]);
-        
+
             if ($produitSaved) {
                 return response()->json([
                     'status' => 200,
@@ -125,6 +131,52 @@ class PrduitController extends Controller
     }
 
     /**
+     * Update Quantity of Store ptoduct in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $produitId
+     * @param  int  $fournisseurId
+     * @return \Illuminate\Http\Response
+     */
+    public function addQuantite(Request $request, $produitId, $fournisseurId)
+    {
+        $produit = Produit::findOrFail($produitId);
+        $fournisseur = Fournisseur::findOrFail($fournisseurId);
+
+        $produit->fournisseurs()->attach($fournisseur->id, [
+            'qte_entree' => $request->input('qte_entree'),
+            'date_entree' => now(),
+        ]);
+
+        $produit->quantite += $request->input('qte_entree');
+        $produit->save();
+        $produit = $produit->load(['fournisseurs' => function ($query) {
+            $query->withPivot('qte_entree');
+        }, 'categorie']);
+        $data = [
+                'id' => $produit->id,
+                'nom' => $produit->nom,
+                'image' => $produit->image,
+                'code_produit' => $produit->code_produit,
+                'quantite' => $produit->quantite,
+                'prix_unitaire' => $produit->prix_unitaire,
+                'description' => $produit->description,
+                'categorie_id' => $produit->categorie_id,
+                'categorie_nom' => $produit->categorie->nom,
+                'fournisseurs' => $produit->fournisseurs->map(function ($fournisseur) {
+                    return [
+                        'id' => $fournisseur->id,
+                        'code_fournisseur' => $fournisseur->code_fournisseur,
+                        'nom' => $fournisseur->nom,
+                        'qte_entree' => $fournisseur->pivot->qte_entree, // Ajout de la quantité spécifique à chaque fournisseur
+                    ];
+                }),
+                'created_at' => $produit->created_at,
+                'updated_at' => $produit->updated_at,
+            ];
+        return response()->json(['produit' => $data], 200);
+    }
+    /**
      * Display the specified resource.
      *
      * @param  string  $param
@@ -133,7 +185,7 @@ class PrduitController extends Controller
      */
     public function show($column, $param)
     {
-        $produits = Produit::where($column, 'LIKE', "%$param%")->with('fournisseurs','categorie')->paginate(5);
+        $produits = Produit::where($column, 'LIKE', "%$param%")->with('fournisseurs', 'categorie')->paginate(5);
 
         if (!$produits) {
             return response()->json([
@@ -173,7 +225,7 @@ class PrduitController extends Controller
                         }),
                     ],
                 ], 200);
-            } 
+            }
         }
     }
 
