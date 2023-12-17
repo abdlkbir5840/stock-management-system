@@ -14,7 +14,7 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        $commandes = Commande::with('client', 'orderStatus')->get();
+        $commandes = Commande::with('client', 'orderStatus', 'discount')->get();
         if ($commandes->count() > 0) {
             $data = [
                 'status' => "200",
