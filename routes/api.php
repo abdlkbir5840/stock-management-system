@@ -36,10 +36,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('produits', [PrduitController::class, 'index']);
 Route::post('produits', [PrduitController::class, 'store']);
+Route::post('produits/quantite/{produitId}/{fournisseurId}', [PrduitController::class, 'addQuantite']);
 Route::get('produits/{column}/{param}', [PrduitController::class, 'show']);
 Route::put('produits/{id}', [PrduitController::class, 'update']);
 Route::delete('produits/{id}', [PrduitController::class, 'destroy']);
-
 
 
 
