@@ -20,7 +20,7 @@ class PrduitController extends Controller
         $produits = Produit::with(['fournisseurs' => function ($query) {
             $query->withPivot('qte_entree');
         }, 'categorie'])->paginate(8);
-        
+
         if (!$produits->isEmpty()) {
             return response()->json([
                 'status' => 200,
@@ -34,8 +34,6 @@ class PrduitController extends Controller
                             'id' => $produit->id,
                             'nom' => $produit->nom,
                             'image' => $produit->image,
-                            'title' => $produit->title,
-                            'price' => $produit->price,
                             'code_produit' => $produit->code_produit,
                             'quantite' => $produit->quantite,
                             'prix_unitaire' => $produit->prix_unitaire,
@@ -97,7 +95,7 @@ class PrduitController extends Controller
         $existingProduit = Produit::where('code_produit', $request->code_produit)->first();
 
         if ($existingProduit) {
-            //handle quantite 
+            //handle quantite
             return response()->json([
                 'status' => 409,
                 'Message' => "Produit deja existe."
@@ -210,9 +208,7 @@ class PrduitController extends Controller
                                 'image' => $produit->image,
                                 'code_produit' => $produit->code_produit,
                                 'quantite' => $produit->quantite,
-                                'title' => $produit->title,
                                 'prix_unitaire' => $produit->prix_unitaire,
-                                'price' => $produit->price,
                                 'description' => $produit->description,
                                 'categorie_id' => $produit->categorie_id,
                                 'categorie_nom' => $produit->categorie->nom,
