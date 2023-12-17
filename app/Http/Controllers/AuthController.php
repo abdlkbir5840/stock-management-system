@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,6 +30,49 @@ class AuthController extends Controller
         return response($response ,201);
     }
 
+    public function registerClient(Request $request){
+        $fields = $request ->validate([
+            'firstName'=>'required|string',
+            'lastName'=>'required|string',
+            'phone'=>'required|string',
+            'address'=>'required|string',
+            'email'=>'required|string',
+            'password'=>'required|string'
+        ]);
+        $client = Client::create([
+            'firstName'=> $fields['firstName'],
+            'lastName'=> $fields['lastName'],
+            'phone'=> $fields['phone'],
+            'address'=> $fields['address'],
+            'email'=> $fields['email'],
+            'password'=> bcrypt($fields['password'])
+        ]);
+        $token = $client ->createToken('myapptoken')->plainTextToken;
+        $response = [
+            'client' => $client,
+            'token'=>$token
+        ];
+        return response($response ,201);
+    }
+
+    public function loginClient(Request $request){
+        $fields = $request ->validate([
+            'email'=>'required|string',
+            'password'=>'required|string'
+        ]);
+        $client=Client::where('email',$fields['email'])->first();
+        if (!$client || !Hash::check($fields['password'],$client->password)){
+            return response([
+                'message' => 'Bad creds'
+            ],401);
+        }
+        $token = $client ->createToken('myapptoken')->plainTextToken;
+        $response = [
+            'user' => $client,
+            'token'=>$token
+        ];
+        return response($response ,201);
+    }
 
     public function login(Request $request){
         $fields = $request ->validate([

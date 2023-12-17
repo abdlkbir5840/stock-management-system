@@ -49,6 +49,7 @@ Route::delete('produits/{id}', [PrduitController::class, 'destroy']);
 //Route::delete('clients/{id}', [ClientController::class, 'destroy']);
 //Route::put('clients/{id}', [ClientController::class, 'update']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('loginClient', [AuthController::class, 'loginClient']);
 Route::post('register', [AuthController::class, 'register']);
 Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::get('clients', [ClientController::class, 'index']);
@@ -57,6 +58,9 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::delete('clients/{id}', [ClientController::class, 'destroy']);
     Route::put('clients/{id}', [ClientController::class, 'update']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('commandes', [CommandeController::class, 'index']);
+    Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
+    Route::put('commandes/{id}', [CommandeController::class, 'update']);
 });
 
 Route::get('factures', [FactureController::class, 'index']);
@@ -78,13 +82,10 @@ Route::delete('packProduits/{pack_id}/{produit_id}', [Produit_PackController::cl
 Route::put('packProduits/{id}', [Produit_PackController::class, 'update']);
 
 
-
-
-Route::get('commandes', [CommandeController::class, 'index']);
+Route::post('registerClient', [AuthController::class, 'registerClient']);
 Route::get('commandes/{id}', [CommandeController::class, 'show']);
 Route::post('commandes', [CommandeController::class, 'store']);
-Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
-Route::put('commandes/{id}', [CommandeController::class, 'update']);
+
 
 
 Route::get('fournisseurs', [FournisseurController::class, 'index']);
