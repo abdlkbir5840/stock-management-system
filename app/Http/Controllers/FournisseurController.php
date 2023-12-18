@@ -36,7 +36,22 @@ class FournisseurController extends Controller
             ], 404);
         }
     }
-
+    public function getAll()
+    {
+        $fournisseurs = Fournisseur::all();
+        if ($fournisseurs->count() > 0) {
+            $data = [
+                'status' => "200",
+                'fournisseur' => $fournisseurs
+            ];
+            return response()->json($data, 200);
+        } else {
+            return response()->json([
+                'status' => "404",
+                'message' => "Aucun enregistrement trouvé"
+            ], 404);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *

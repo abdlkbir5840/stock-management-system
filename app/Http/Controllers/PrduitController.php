@@ -115,7 +115,10 @@ class PrduitController extends Controller
                 'qte_entree' => $request->qte_entree,
                 'date_entree' => now(),
             ]);
-
+            $produitSaved->load(['fournisseurs' => function ($query) {
+                $query->withPivot('qte_entree');
+            }, 'categorie']);
+            
             if ($produitSaved) {
                 return response()->json([
                     'status' => 200,
