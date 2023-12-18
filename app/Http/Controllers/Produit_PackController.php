@@ -16,7 +16,7 @@ class Produit_PackController extends Controller
     public function index()
     {
         $existingPacksProduits = Pack::with('produits')
-            ->paginate(10);
+            ->paginate(8);
         if (!$existingPacksProduits) {
             return response()->json([
                 'status' => 404,
@@ -65,10 +65,13 @@ class Produit_PackController extends Controller
 
 
 
-        $pack->produits()->attach($produit);
-
+        $savedPack=$pack->produits()->attach($produit);
+        $updatedPack = Pack::with('produits')->find($request->pack_id);
         // Retournez une réponse JSON en cas de succès
-        return response()->json(['message' => 'Les produits ont été ajoutés au pack avec succès.'], 200);
+        return response()->json([
+            'status' => 200,
+            'pack' => $updatedPack
+        ], 200);
     }
 
     /**
@@ -81,7 +84,7 @@ class Produit_PackController extends Controller
     {
         $existingPacksProduits = Pack::with('produits')
             ->where($column, 'LIKE', "%$param%")
-            ->paginate(10);
+            ->paginate(8);
         if (!$existingPacksProduits) {
             return response()->json([
                 'status' => 404,
