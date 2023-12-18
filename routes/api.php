@@ -63,16 +63,22 @@ Route::delete('clients/{id}', [ClientController::class, 'destroy']);
 Route::put('clients/{id}', [ClientController::class, 'update']);
 
 Route::group(['middleware'=> ['auth:sanctum']], function () {
-    Route::get('clients', [ClientController::class, 'index']);
-    Route::post('clients', [ClientController::class, 'store']);
-    Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
-    Route::delete('clients/{id}', [ClientController::class, 'destroy']);
-    Route::put('clients/{id}', [ClientController::class, 'update']);
+//    Route::get('clients', [ClientController::class, 'index']);
+//    Route::post('clients', [ClientController::class, 'store']);
+//    Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
+//    Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+//    Route::put('clients/{id}', [ClientController::class, 'update']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('commandes', [CommandeController::class, 'index']);
     Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
     Route::put('commandes/{id}', [CommandeController::class, 'update']);
 });
+
+Route::get('clients', [ClientController::class, 'index']);
+Route::post('clients', [ClientController::class, 'store']);
+Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
+Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+Route::put('clients/{id}', [ClientController::class, 'update']);
 
 Route::get('factures', [FactureController::class, 'index']);
 Route::post('factures', [FactureController::class, 'store']);
