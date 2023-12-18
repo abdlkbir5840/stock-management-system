@@ -14,7 +14,7 @@ class Client extends Model
     protected $table = 'Client';
 
     // Les colonnes pouvant être remplies massivement
-    protected $fillable = ['firstName','lastName','email','phone','adresse'];
+    protected $fillable = ['firstName','lastName','email','phone','password', 'address'];
     public function commandes()
     {
         return $this->hasMany(Commande::class);
