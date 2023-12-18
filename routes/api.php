@@ -42,7 +42,6 @@ Route::put('produits/{id}', [PrduitController::class, 'update']);
 Route::delete('produits/{id}', [PrduitController::class, 'destroy']);
 
 
-
 //Route::get('clients', [ClientController::class, 'index']);
 //Route::post('clients', [ClientController::class, 'store']);
 //Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
