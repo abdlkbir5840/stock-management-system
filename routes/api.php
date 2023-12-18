@@ -101,6 +101,7 @@ Route::post('commandes', [CommandeController::class, 'store']);
 
 
 Route::get('fournisseurs', [FournisseurController::class, 'index']);
+Route::get('fournisseurs/all', [FournisseurController::class, 'getAll']);
 Route::post('fournisseurs', [FournisseurController::class, 'store']);
 Route::get('fournisseurs/{column}/{param}', [FournisseurController::class, 'show']);
 Route::put('fournisseurs/{id}', [FournisseurController::class, 'update']);
@@ -121,6 +122,7 @@ Route::delete('discounts/{id}', [DiscountController::class, 'destroy']);
 
 
 Route::get('categories', [CategorieController::class, 'index']);
+Route::get('categories/all', [CategorieController::class, 'getAll']);
 Route::post('categories', [CategorieController::class, 'store']);
 Route::get('categories/{column}/{param}', [CategorieController::class, 'show']);
 Route::put('categories/{id}', [CategorieController::class, 'update']);
