@@ -62,6 +62,23 @@ class PrduitController extends Controller
         }
     }
 
+    public function getAllProducts()
+    {
+        $produits = Produit::all();
+        if ($produits->count() > 0) {
+            $data = [
+                'status' => "200",
+                'produits' => $produits
+            ];
+            return response()->json($data, 200);
+        } else {
+            return response()->json([
+                'status' => "404",
+                'message' => "Aucun enregistrement trouvé"
+            ], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -118,7 +135,7 @@ class PrduitController extends Controller
             $produitSaved->load(['fournisseurs' => function ($query) {
                 $query->withPivot('qte_entree');
             }, 'categorie']);
-            
+
             if ($produitSaved) {
                 return response()->json([
                     'status' => 200,

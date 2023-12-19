@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('produits', [PrduitController::class, 'index']);
+Route::get('produits/all', [PrduitController::class, 'getAllProducts']);
 Route::post('produits', [PrduitController::class, 'store']);
 Route::post('produits/quantite/{produitId}/{fournisseurId}', [PrduitController::class, 'addQuantite']);
 Route::get('produits/{column}/{param}', [PrduitController::class, 'show']);
@@ -62,23 +63,18 @@ Route::get('clients/{column1}/{param1}/{column2}/{param2}', [ClientController::c
 Route::delete('clients/{id}', [ClientController::class, 'destroy']);
 Route::put('clients/{id}', [ClientController::class, 'update']);
 
-Route::group(['middleware'=> ['auth:sanctum']], function () {
-//    Route::get('clients', [ClientController::class, 'index']);
-//    Route::post('clients', [ClientController::class, 'store']);
-//    Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
-//    Route::delete('clients/{id}', [ClientController::class, 'destroy']);
-//    Route::put('clients/{id}', [ClientController::class, 'update']);
+//Route::group(['middleware'=> ['auth:sanctum']], function () {
+    Route::get('clients', [ClientController::class, 'index']);
+    Route::post('clients', [ClientController::class, 'store']);
+    Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
+    Route::delete('clients/{id}', [ClientController::class, 'destroy']);
+    Route::put('clients/{id}', [ClientController::class, 'update']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('commandes', [CommandeController::class, 'index']);
     Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
     Route::put('commandes/{id}', [CommandeController::class, 'update']);
-});
+//});
 
-Route::get('clients', [ClientController::class, 'index']);
-Route::post('clients', [ClientController::class, 'store']);
-Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
-Route::delete('clients/{id}', [ClientController::class, 'destroy']);
-Route::put('clients/{id}', [ClientController::class, 'update']);
 
 Route::get('factures', [FactureController::class, 'index']);
 Route::post('factures', [FactureController::class, 'store']);
