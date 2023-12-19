@@ -17,14 +17,9 @@ class PrduitController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD
-        $produits = Produit::with('fournisseurs', 'categorie')->paginate(20);
-=======
         $produits = Produit::with(['fournisseurs' => function ($query) {
             $query->withPivot('qte_entree');
-        }, 'categorie'])->paginate(8);
->>>>>>> 1cddd8c238789cc2e4ae3871e90cbd4df902edb3
-
+        }, 'categorie'])->paginate(20);
         if (!$produits->isEmpty()) {
             return response()->json([
                 'status' => 200,
