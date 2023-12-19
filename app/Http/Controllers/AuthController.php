@@ -35,7 +35,7 @@ class AuthController extends Controller
             'firstName'=>'required|string',
             'lastName'=>'required|string',
             'phone'=>'required|string',
-            'address'=>'required|string',
+            'adresse'=>'required|string',
             'email'=>'required|string',
             'password'=>'required|string'
         ]);
@@ -43,7 +43,7 @@ class AuthController extends Controller
             'firstName'=> $fields['firstName'],
             'lastName'=> $fields['lastName'],
             'phone'=> $fields['phone'],
-            'address'=> $fields['address'],
+            'adresse'=> $fields['adresse'],
             'email'=> $fields['email'],
             'password'=> bcrypt($fields['password'])
         ]);
