@@ -12,6 +12,7 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PackageCommandeController;
 use App\Http\Controllers\PackController;
 use App\Http\Controllers\PrduitController;
 use App\Http\Controllers\Produit_PackController;
@@ -129,3 +130,8 @@ Route::post('categories', [CategorieController::class, 'store']);
 Route::get('categories/{column}/{param}', [CategorieController::class, 'show']);
 Route::put('categories/{id}', [CategorieController::class, 'update']);
 Route::delete('categories/{id}', [CategorieController::class, 'destroy']);
+
+
+Route::get('packsCommandes', [PackageCommandeController::class, 'index']);
+Route::post('packsCommandes', [PackageCommandeController::class, 'store']);
+
