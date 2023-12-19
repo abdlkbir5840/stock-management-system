@@ -38,6 +38,23 @@ class CategorieController extends Controller
         }
     }
 
+    public function getAll()
+    {
+        $categories = Categorie::all();
+        if ($categories->count() > 0) {
+            $data = [
+                'status' => "200",
+                'categories' => $categories
+            ];
+            return response()->json($data, 200);
+        } else {
+            return response()->json([
+                'status' => "404",
+                'message' => "Aucun enregistrement trouvé"
+            ], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
