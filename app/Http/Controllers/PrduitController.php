@@ -118,7 +118,7 @@ class PrduitController extends Controller
             $produitSaved->load(['fournisseurs' => function ($query) {
                 $query->withPivot('qte_entree');
             }, 'categorie']);
-            
+
             if ($produitSaved) {
                 return response()->json([
                     'status' => 200,
@@ -278,11 +278,11 @@ class PrduitController extends Controller
     {
         $existingProduit = Produit::find($id);
         if (!$existingProduit) {
-            // return response()->json([
-            //     'status' => 404,
-            //     'Message' => "Produit non trouvé."
-            // ], 404);
-            return redirect('/produits')->with('fail', "Produit non trouvé.");
+            return response()->json([
+                'status' => 404,
+                'Message' => "Produit non trouvé."
+            ], 404);
+            // return redirect('/produits')->with('fail', "Produit non trouvé.");
         } else {
             $produitmatchCode = Produit::where('code_produit', $request->code)->first();
             if ($produitmatchCode) {
@@ -319,8 +319,8 @@ class PrduitController extends Controller
             ], 404);
             // return redirect('/produits')->with('fail', "Produit non trouvé");
         } else {
-            $existingProduit->delete();
-
+        $existingProduit->fournisseurs()->detach();
+        $existingProduit->delete();
             return response()->json([
                 'status' => 200,
                 'message' => "Le produit est supprimé avec succès"
