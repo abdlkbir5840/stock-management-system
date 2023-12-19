@@ -54,7 +54,6 @@ Route::post('register', [AuthController::class, 'register']);
 Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::get('clients', [ClientController::class, 'index']);
     Route::post('clients', [ClientController::class, 'store']);
-    Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
     Route::delete('clients/{id}', [ClientController::class, 'destroy']);
     Route::put('clients/{id}', [ClientController::class, 'update']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -62,6 +61,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
     Route::put('commandes/{id}', [CommandeController::class, 'update']);
 });
+Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
 
 Route::get('factures', [FactureController::class, 'index']);
 Route::post('factures', [FactureController::class, 'store']);

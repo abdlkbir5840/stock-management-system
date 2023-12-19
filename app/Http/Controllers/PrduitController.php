@@ -16,12 +16,13 @@ class PrduitController extends Controller
      */
     public function index()
     {
-        $produits = Produit::with('fournisseurs', 'categorie')->paginate(5);
+        $produits = Produit::with('fournisseurs', 'categorie')->paginate(20);
 
         if (!$produits->isEmpty()) {
             return response()->json([
                 'status' => 200,
                 'produits' => [
+                    // 'perPage' => $produits->perPage(),
                     'perPage' => $produits->perPage(),
                     'currentPage' => $produits->currentPage(),
                     'totalCount' => $produits->total(),
