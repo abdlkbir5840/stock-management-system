@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password')->unique();
             $table->string('phone')->unique();
             $table->string('adresse');
+            $table->string('password');
             $table->timestamps();
         });
     }

@@ -19,12 +19,12 @@ class PrduitController extends Controller
     {
         $produits = Produit::with(['fournisseurs' => function ($query) {
             $query->withPivot('qte_entree');
-        }, 'categorie'])->paginate(8);
-
+        }, 'categorie'])->paginate(20);
         if (!$produits->isEmpty()) {
             return response()->json([
                 'status' => 200,
                 'produits' => [
+                    // 'perPage' => $produits->perPage(),
                     'perPage' => $produits->perPage(),
                     'currentPage' => $produits->currentPage(),
                     'totalCount' => $produits->total(),
