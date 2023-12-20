@@ -19,12 +19,12 @@ class PrduitController extends Controller
     {
         $produits = Produit::with(['fournisseurs' => function ($query) {
             $query->withPivot('qte_entree');
-        }, 'categorie'])->paginate(8);
-
+        }, 'categorie'])->paginate(20);
         if (!$produits->isEmpty()) {
             return response()->json([
                 'status' => 200,
                 'produits' => [
+                    // 'perPage' => $produits->perPage(),
                     'perPage' => $produits->perPage(),
                     'currentPage' => $produits->currentPage(),
                     'totalCount' => $produits->total(),
@@ -54,6 +54,23 @@ class PrduitController extends Controller
                     }),
                 ],
             ], 200);
+        } else {
+            return response()->json([
+                'status' => "404",
+                'message' => "Aucun enregistrement trouvé"
+            ], 404);
+        }
+    }
+
+    public function getAllProducts()
+    {
+        $produits = Produit::all();
+        if ($produits->count() > 0) {
+            $data = [
+                'status' => "200",
+                'produits' => $produits
+            ];
+            return response()->json($data, 200);
         } else {
             return response()->json([
                 'status' => "404",

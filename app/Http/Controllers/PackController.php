@@ -15,7 +15,7 @@ class PackController extends Controller
      */
     public function index()
     {
-        $packes = Pack::paginate(6);
+        $packes = Pack::paginate(8);
         if(!$packes->isEmpty()){
             $response = [
                 'perPage' => $packes->perPage(),
@@ -86,7 +86,7 @@ class PackController extends Controller
      */
     public function show($column, $param)
     {
-        $existingPacks = Pack::where($column, 'LIKE', "%$param%")->paginate(9);
+        $existingPacks = Pack::where($column, 'LIKE', "%$param%")->paginate(8);
         if (!$existingPacks) {
             return response()->json([
                 'status' => 404,
