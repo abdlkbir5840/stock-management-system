@@ -55,24 +55,35 @@ class Produit_PackController extends Controller
      */
     public function store(Request $request)
     {
-
-
         // Récupérez le pack existant
         $pack = Pack::findOrFail($request->pack_id);
 
-        // Attachez les produits au pack
+        // Limitez le nombre maximal de produits attachés au pack
+        $maxProduits = $pack->nbrProduits;; // Définissez la limite souhaitée
+
+        // Vérifiez le nombre actuel de produits attachés au pack
+        $nombreProduitsActuel = $pack->produits()->count();
+
+        // Si le nombre actuel atteint la limite, renvoyez une réponse d'erreur
+        if ($nombreProduitsActuel >= $maxProduits) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'La limite maximale de produits dans le pack est atteinte.'
+            ], 400);
+        }
+
+        // Si la limite n'est pas atteinte, attachez le nouveau produit au pack
         $produit = $request->input('produit_id');
+        $savedPack = $pack->produits()->attach($produit);
 
-
-
-        $savedPack=$pack->produits()->attach($produit);
-        $updatedPack = Pack::with('produits')->find($request->pack_id);
         // Retournez une réponse JSON en cas de succès
+        $updatedPack = Pack::with('produits')->find($request->pack_id);
         return response()->json([
             'status' => 200,
             'pack' => $updatedPack
         ], 200);
     }
+
 
     /**
      * Display the specified resource.

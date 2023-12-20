@@ -14,7 +14,7 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        $commandes = Commande::with('produits','client', 'orderStatus', 'discount')->paginate(5);
+        $commandes = Commande::with('client', 'orderStatus','produits')->paginate(5);
         if(!$commandes->isEmpty()){
             $response = [
                 'perPage' => $commandes->perPage(),
@@ -140,10 +140,11 @@ class CommandeController extends Controller
             $existingCommande->update($request->all());
             //return redirect('/commandes')->with('Sucess','Data updated');
 
-            return response()->json([
-                'status' => 404,
-                'data' => "La commande est modifié avec succés"
-            ], 404);
+            $response = [
+                "status" => 200,
+                "data" =>$existingCommande
+            ];
+            return response()->json($response, 200);
         }
     }
 
