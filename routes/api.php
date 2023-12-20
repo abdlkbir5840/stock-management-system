@@ -102,15 +102,14 @@ Route::get('commandes/{id}', [CommandeController::class, 'show']);
 Route::post('commandes', [CommandeController::class, 'store']);
 
 
-
+Route::group(['middleware'=> ['auth:sanctum']], function () {
 Route::get('fournisseurs', [FournisseurController::class, 'index']);
 Route::get('fournisseurs/all', [FournisseurController::class, 'getAll']);
 Route::post('fournisseurs', [FournisseurController::class, 'store']);
 Route::get('fournisseurs/{column}/{param}', [FournisseurController::class, 'show']);
 Route::put('fournisseurs/{id}', [FournisseurController::class, 'update']);
 Route::delete('fournisseurs/{id}', [FournisseurController::class, 'destroy']);
-
-
+});
 Route::get('orderStatuses', [OrderStatusController::class, 'index']);
 Route::get('orderStatuses/{id}', [OrderStatusController::class, 'show']);
 Route::post('orderStatuses', [OrderStatusController::class, 'store']);

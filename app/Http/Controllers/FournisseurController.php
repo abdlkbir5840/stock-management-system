@@ -191,7 +191,7 @@ class FournisseurController extends Controller
         $existingFournisseur->update($request->all());
         $response = [
             "status" => 200,
-            "data" => $existingFournisseur
+            "fournisseur" => $existingFournisseur
         ];
         return response()->json($response, 200);
     }
