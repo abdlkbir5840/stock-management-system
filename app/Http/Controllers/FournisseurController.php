@@ -83,7 +83,7 @@ class FournisseurController extends Controller
             $response = [
                 'status' => 422,
                 "message" => "Validation échouée",
-                'les erreurs' => $validators->errors()
+                'erreurs' => $validators->errors()
             ];
             return response()->json($response, 422);
         }

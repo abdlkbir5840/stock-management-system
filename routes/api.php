@@ -59,9 +59,6 @@ Route::post('register', [AuthController::class, 'register']);
 //Route::get('clients/{column}/{param}', [ClientController::class, 'show']);
 //Route::delete('clients/{id}', [ClientController::class, 'destroy']);
 //Route::put('clients/{id}', [ClientController::class, 'update']);
-Route::post('logout', [AuthController::class, 'logout']);
-
-
 //});
 
 
@@ -72,11 +69,11 @@ Route::post('logout', [AuthController::class, 'logout']);
 
 
 Route::post('registerClient', [AuthController::class, 'registerClient']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
-
-
-Route::group(['middleware'=> ['auth:sanctum']], function () {
-
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('fournisseurs', [FournisseurController::class, 'index']);
     Route::get('fournisseurs/all', [FournisseurController::class, 'getAll']);
     Route::post('fournisseurs', [FournisseurController::class, 'store']);
@@ -84,7 +81,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::put('fournisseurs/{id}', [FournisseurController::class, 'update']);
     Route::delete('fournisseurs/{id}', [FournisseurController::class, 'destroy']);
 });
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('commandes', [CommandeController::class, 'index']);
     Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
     Route::put('commandes/{id}', [CommandeController::class, 'update']);
@@ -93,7 +90,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::post('commandes', [CommandeController::class, 'store']);
 });
 
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('clients', [ClientController::class, 'index']);
     Route::post('clients', [ClientController::class, 'store']);
     Route::get('clients/{column1}/{param1}', [ClientController::class, 'show']);
@@ -101,7 +98,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::delete('clients/{id}', [ClientController::class, 'destroy']);
     Route::put('clients/{id}', [ClientController::class, 'update']);
 });
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('categories', [CategorieController::class, 'index']);
     Route::get('categories/all', [CategorieController::class, 'getAll']);
     Route::post('categories', [CategorieController::class, 'store']);
@@ -109,7 +106,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::put('categories/{id}', [CategorieController::class, 'update']);
     Route::delete('categories/{id}', [CategorieController::class, 'destroy']);
 });
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('produits', [PrduitController::class, 'index']);
     Route::get('produits/all', [PrduitController::class, 'getAllProducts']);
     Route::post('produits', [PrduitController::class, 'store']);
@@ -119,7 +116,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::delete('produits/{id}', [PrduitController::class, 'destroy']);
 });
 
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('packs', [PackController::class, 'index']);
     Route::post('packs', [PackController::class, 'store']);
     Route::get('packs/{column}/{param}', [PackController::class, 'show']);
@@ -127,7 +124,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::put('packs/{id}', [PackController::class, 'update']);
 });
 
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('packProduits', [Produit_PackController::class, 'index']);
     Route::post('packProduits', [Produit_PackController::class, 'store']);
     Route::get('packProduits/{column}/{param}', [Produit_PackController::class, 'show']);
@@ -140,7 +137,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
 //Route::delete('factures/{id}', [FactureController::class, 'destroy']);
 //Route::put('factures/{id}', [FactureController::class, 'update']);
 
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('orderStatuses', [OrderStatusController::class, 'index']);
     Route::get('orderStatuses/{id}', [OrderStatusController::class, 'show']);
     Route::post('orderStatuses', [OrderStatusController::class, 'store']);
@@ -153,7 +150,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
 //Route::put('discounts/{id}', [DiscountController::class, 'update']);
 //Route::delete('discounts/{id}', [DiscountController::class, 'destroy']);
 
-Route::group(['middleware'=> ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('packsCommandes', [PackageCommandeController::class, 'index']);
     Route::post('packsCommandes', [PackageCommandeController::class, 'store']);
 });
