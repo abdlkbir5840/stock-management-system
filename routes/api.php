@@ -89,6 +89,7 @@ Route::group(['middleware'=> ['auth:sanctum']], function () {
     Route::delete('commandes/{id}', [CommandeController::class, 'destroy']);
     Route::put('commandes/{id}', [CommandeController::class, 'update']);
     Route::get('commandes/{id}', [CommandeController::class, 'show']);
+    Route::get('commandes/{column}/{param}', [CommandeController::class, 'show1']);
     Route::post('commandes', [CommandeController::class, 'store']);
 });
 

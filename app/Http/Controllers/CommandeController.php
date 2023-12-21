@@ -109,6 +109,32 @@ class CommandeController extends Controller
             ], 200);
         }
     }
+    public function show1($column, $param){
+
+        $existingCommandes =Commande::with('client', 'orderStatus','produits')
+            ->where($column, 'LIKE', "%$param%")
+            ->paginate(8);
+
+        if (!$existingCommandes) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Commande non trouvé."
+            ], 404);
+        } else {
+            $response = [
+                'perPage' => $existingCommandes->perPage(),
+                'currentPage' => $existingCommandes->currentPage(),
+                'totalCount' => $existingCommandes->total(),
+                'totalPages' => $existingCommandes->lastPage(),
+                'data' => $existingCommandes->items(),
+            ];
+            return response()->json([
+                'status' => 200,
+                'Message' => "La recherche par $column",
+                'commande' => $response
+            ], 200);
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.
