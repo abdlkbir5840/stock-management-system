@@ -73,19 +73,24 @@ class CategorieController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validators = Validator::make($request->all(), [
             'nom' => 'required',
             'description' => 'required',
         ]);
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+        if ($validators->fails()) {
+            $response = [
+                'status' => 422,
+                "message" => "Validation échouée",
+                'erreurs' => $validators->errors()
+            ];
+            return response()->json($response, 422);
         }
         $existingCategorie = Categorie::where('nom', $request->nom)->first();
 
         if ($existingCategorie) {
             return response()->json([
                 'status' => 409,
-                'Message' => "Categorie deja existe."
+                'message' => "Categorie deja existe."
             ], 409);
         } else {
             $categorieSaved = Categorie::create($request->all());

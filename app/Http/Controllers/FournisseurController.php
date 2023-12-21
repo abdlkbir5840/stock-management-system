@@ -121,9 +121,9 @@ class FournisseurController extends Controller
     {
         $existingFournisseurs = Fournisseur::where($column, 'LIKE', "%$param%")->paginate(5);
 
-        if ($existingFournisseurs->count() == 0) {
+        if (!$existingFournisseurs) {
             $response = [
-                'status' => 500,
+                'status' => 404,
                 'message' => 'Aucun enregistrement trouvé.'
             ];
             return response()->json($response, 404);
