@@ -162,40 +162,60 @@ class PrduitController extends Controller
     {
         $produit = Produit::findOrFail($produitId);
         $fournisseur = Fournisseur::findOrFail($fournisseurId);
-
-        $produit->fournisseurs()->attach($fournisseur->id, [
-            'qte_entree' => $request->input('qte_entree'),
-            'date_entree' => now(),
-        ]);
-
-        $produit->quantite += $request->input('qte_entree');
+    
+        // Vérifier si la relation existe déjà
+        $existingRelation = $produit->fournisseurs()->where('fournisseur_id', $fournisseur->id)->first();
+    
+        $qte_entree = $request->input('qte_entree');
+    
+        if ($existingRelation) {
+            // Mise à jour de la quantité existante
+            $existingRelation->pivot->update([
+                'qte_entree' => $existingRelation->pivot->qte_entree + $qte_entree,
+                'date_entree' => now(),
+            ]);
+        } else {
+            // Ajout d'une nouvelle relation
+            $produit->fournisseurs()->attach($fournisseur->id, [
+                'qte_entree' => $qte_entree,
+                'date_entree' => now(),
+            ]);
+        }
+    
+        // Mise à jour de la quantité totale du produit
+        $produit->quantite += $qte_entree;
         $produit->save();
+    
+        // Chargement des relations pour la réponse JSON
         $produit = $produit->load(['fournisseurs' => function ($query) {
             $query->withPivot('qte_entree');
         }, 'categorie']);
-        $data = [
-                'id' => $produit->id,
-                'nom' => $produit->nom,
-                'image' => $produit->image,
-                'code_produit' => $produit->code_produit,
-                'quantite' => $produit->quantite,
-                'prix_unitaire' => $produit->prix_unitaire,
-                'description' => $produit->description,
-                'categorie_id' => $produit->categorie_id,
-                'categorie_nom' => $produit->categorie->nom,
-                'fournisseurs' => $produit->fournisseurs->map(function ($fournisseur) {
-                    return [
-                        'id' => $fournisseur->id,
-                        'code_fournisseur' => $fournisseur->code_fournisseur,
-                        'nom' => $fournisseur->nom,
-                        'qte_entree' => $fournisseur->pivot->qte_entree, // Ajout de la quantité spécifique à chaque fournisseur
-                    ];
-                }),
-                'created_at' => $produit->created_at,
-                'updated_at' => $produit->updated_at,
-            ];
+    
+              $data = [
+                    'id' => $produit->id,
+                    'nom' => $produit->nom,
+                    'image' => $produit->image,
+                    'code_produit' => $produit->code_produit,
+                    'quantite' => $produit->quantite,
+                    'prix_unitaire' => $produit->prix_unitaire,
+                    'description' => $produit->description,
+                    'categorie_id' => $produit->categorie_id,
+                    'categorie_nom' => $produit->categorie->nom,
+                    'fournisseurs' => $produit->fournisseurs->map(function ($fournisseur) {
+                        return [
+                            'id' => $fournisseur->id,
+                            'code_fournisseur' => $fournisseur->code_fournisseur,
+                            'nom' => $fournisseur->nom,
+                            'qte_entree' => $fournisseur->pivot->qte_entree, // Ajout de la quantité spécifique à chaque fournisseur
+                        ];
+                    }),
+                    'created_at' => $produit->created_at,
+                    'updated_at' => $produit->updated_at,
+                ];
+    
         return response()->json(['produit' => $data], 200);
     }
+    
     /**
      * Display the specified resource.
      *
