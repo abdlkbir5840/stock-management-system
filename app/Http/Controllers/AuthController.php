@@ -43,7 +43,7 @@ class AuthController extends Controller
             'firstName'=> $fields['firstName'],
             'lastName'=> $fields['lastName'],
             'phone'=> $fields['phone'],
-            'adresse'=> $fields['adresse'],
+            'adresse'=> $fields['adresse'], 
             'email'=> $fields['email'],
             'password'=> bcrypt($fields['password'])
         ]);

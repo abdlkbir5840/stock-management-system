@@ -56,7 +56,8 @@ class PackageCommandeController extends Controller
      */
     public function store(Request $request)
     {
-        $commandeData = $request->only(['','pack_command_id', 'price', 'client_id']);
+        // $commandeData = $request->only(['','pack_command_id', 'price', 'client_id']);
+        $commandeData = $request->all();
 
 
         $commandeSaved = CommandePackage::create($commandeData);
