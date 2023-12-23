@@ -14,7 +14,7 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        $commandes = Commande::with('client', 'orderStatus','produits')->paginate(5);
+        $commandes = Commande::whereHas('produits')->with('client', 'orderStatus','produits')->paginate(5);
         if(!$commandes->isEmpty()){
             $response = [
                 'perPage' => $commandes->perPage(),

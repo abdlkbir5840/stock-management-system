@@ -16,7 +16,7 @@ class PackageCommandeController extends Controller
      */
     public function index()
     {
-        $commandes = CommandePackage::with('client', 'pack')->paginate(5);
+        $commandes = CommandePackage::with('commande', 'pack')->paginate(5);
         if(!$commandes->isEmpty()){
             $response = [
                 'perPage' => $commandes->perPage(),
@@ -38,6 +38,29 @@ class PackageCommandeController extends Controller
         }
     }
 
+    public function index2()
+    {
+        $commandes = Commande::whereHas('packs')->with('client', 'orderStatus','packs')->paginate(5);
+        if(!$commandes->isEmpty()){
+            $response = [
+                'perPage' => $commandes->perPage(),
+                'currentPage' => $commandes->currentPage(),
+                'totalCount' => $commandes->total(),
+                'totalPages' => $commandes->lastPage(),
+                'data' => $commandes->items(),
+            ];
+            $data = [
+                'status'=>"200",
+                'commandes'=>$response
+            ];
+            return response()->json($data, 200);
+        }else{
+            return response()->json([
+                'status'=>"404",
+                'message'=>"Aucun enregistrement trouvé"
+            ],404);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -56,7 +79,8 @@ class PackageCommandeController extends Controller
      */
     public function store(Request $request)
     {
-        $commandeData = $request->only(['','pack_command_id', 'price', 'client_id']);
+        // $commandeData = $request->only(['','pack_command_id', 'price', 'client_id']);
+        $commandeData = $request->all();
 
 
         $commandeSaved = CommandePackage::create($commandeData);
