@@ -111,7 +111,7 @@ class CommandeController extends Controller
     }
     public function show1($column, $param){
 
-        $existingCommandes =Commande::with('client', 'orderStatus','produits')
+        $existingCommandes =Commande::whereHas('produits')->with('client', 'orderStatus','produits')
             ->where($column, 'LIKE', "%$param%")
             ->paginate(8);
 

@@ -160,4 +160,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('packsCommandes', [PackageCommandeController::class, 'index']);
     Route::post('packsCommandes', [PackageCommandeController::class, 'store']);
     Route::get('commandepacks', [PackageCommandeController::class, 'index2']);
+    Route::get('commandepacks/{column}/{param}', [PackageCommandeController::class, 'show']);
+
 });

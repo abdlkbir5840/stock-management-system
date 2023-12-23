@@ -105,11 +105,33 @@ class PackageCommandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
 
+    public function show($column, $param){
+
+        $existingCommandes =Commande::whereHas('packs')->with('client', 'orderStatus','packs')
+            ->where($column, 'LIKE', "%$param%")
+            ->paginate(8);
+
+        if (!$existingCommandes) {
+            return response()->json([
+                'status' => 404,
+                'Message' => "Commande non trouvé."
+            ], 404);
+        } else {
+            $response = [
+                'perPage' => $existingCommandes->perPage(),
+                'currentPage' => $existingCommandes->currentPage(),
+                'totalCount' => $existingCommandes->total(),
+                'totalPages' => $existingCommandes->lastPage(),
+                'data' => $existingCommandes->items(),
+            ];
+            return response()->json([
+                'status' => 200,
+                'Message' => "La recherche par $column",
+                'commande' => $response
+            ], 200);
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *
