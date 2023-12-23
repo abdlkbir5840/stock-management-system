@@ -86,6 +86,43 @@ class CommandeController extends Controller
     }
 
 
+        /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store1(Request $request)
+    {
+        $commandeData = $request->only(['','date_commande', 'prix', 'client_id', 'orderStatus_id', 'discount_id']);
+        $produitsData = $request->input('packs', []);
+
+        if (!isset($commandeData['date_commande'])) {
+            $commandeData['date_commande'] = now()->toDateString();
+        }
+
+        $commandeSaved = Commande::create($commandeData);
+
+        if ($commandeSaved) {
+            $commandeId = $commandeSaved->id;
+
+            if (!empty($produitsData)) {
+                $commandeSaved->packs()->attach($produitsData, ['commande_id' => $commandeId]);
+            }
+        }
+
+        if ($commandeSaved) {
+            return response()->json([
+                'status' => 200,
+                'commande' => $commandeSaved
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Internal server error'
+            ], 500);
+        }
+    }
 
 
     /**

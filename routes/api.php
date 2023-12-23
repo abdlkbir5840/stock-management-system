@@ -155,11 +155,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 //Route::post('discounts', [DiscountController::class, 'store']);
 //Route::put('discounts/{id}', [DiscountController::class, 'update']);
 //Route::delete('discounts/{id}', [DiscountController::class, 'destroy']);
+Route::get('packsCommandes', [PackageCommandeController::class, 'index']);
+Route::get('commandepacks', [PackageCommandeController::class, 'index2']);
+Route::get('commandepacks/{column}/{param}', [PackageCommandeController::class, 'show']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('packsCommandes', [PackageCommandeController::class, 'index']);
     Route::post('packsCommandes', [PackageCommandeController::class, 'store']);
-    Route::get('commandepacks', [PackageCommandeController::class, 'index2']);
-    Route::get('commandepacks/{column}/{param}', [PackageCommandeController::class, 'show']);
+    Route::post('packsCommandes', [CommandeController::class, 'store1']);
+
 
 });
