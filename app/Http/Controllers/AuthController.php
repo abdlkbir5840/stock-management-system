@@ -29,6 +29,23 @@ class AuthController extends Controller
         ];
         return response($response ,201);
     }
+    public function index()
+    {
+        $users = User::all();
+        if(!$users ->isEmpty()){
+
+            $data = [
+                'status'=>"200",
+                'users'=>$users
+            ];
+            return response()->json($data, 200);
+        }else{
+            return response()->json([
+                'status'=>"404",
+                'message'=>"Aucun enregistrement trouvé"
+            ],404);
+        }
+    }
 
     public function registerClient(Request $request){
         $fields = $request ->validate([
@@ -43,7 +60,7 @@ class AuthController extends Controller
             'firstName'=> $fields['firstName'],
             'lastName'=> $fields['lastName'],
             'phone'=> $fields['phone'],
-            'adresse'=> $fields['adresse'], 
+            'adresse'=> $fields['adresse'],
             'email'=> $fields['email'],
             'password'=> bcrypt($fields['password'])
         ]);

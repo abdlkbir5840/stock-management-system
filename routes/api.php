@@ -71,6 +71,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('registerClient', [AuthController::class, 'registerClient']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('users', [AuthController::class, 'index']);
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
